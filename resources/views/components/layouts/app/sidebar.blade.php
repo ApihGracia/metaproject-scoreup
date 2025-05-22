@@ -16,7 +16,8 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group :heading="__('Others')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Testing 1') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clipboard-list" :href="route('result.score')" :current="request()->routeIs('result.score')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
+                    <flux:navlist.item icon="edit" :href="route('result.form')" :current="request()->routeIs('result.form')" wire:navigate>{{ __('Add Result') }}</flux:navlist.item>
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Testing 2') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\ResultForm;
+use App\Livewire\ResultScore;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -19,6 +21,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    
+    // Add here — user must be authenticated
+    Route::get('/result-score', ResultScore::class)->name('result.score');
+    Route::get('/result-form', ResultForm::class)->name('result.form');
+
 });
 
 require __DIR__.'/auth.php';
