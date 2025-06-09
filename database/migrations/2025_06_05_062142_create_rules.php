@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rules', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->integer('Num');
-            $table->string('Sport');
-            $table->string('Pdf file');
-            $table->string('Comments');
+            $table->id('RulesID');
+            $table->string('SportID');
+            $table->string('Rules_title');
+            $table->string('Category');
+            $table->string('Gender');
+            $table->string('PDF');
+            $table->text('Description');
+            $table->string('Profile_picture');
+
         });
     }
 

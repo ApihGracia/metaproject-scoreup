@@ -4,6 +4,9 @@ use App\Livewire\DummmySport1;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Livewire\Tech\Ruleupdate;
+use App\Livewire\Tech\TechDetails;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
     Route::get('dummmy-sport1', DummmySport1::class)->name('dummmy.sport1');
+    Route::get('ruledetail', TechDetails::class)->name('tech.ruledetail');
+    Route::get('ruleupdate',Ruleupdate::class)->name('tech.ruleupdate');
 });
 
 require __DIR__.'/auth.php';
+

@@ -16,8 +16,11 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group :heading="__('Others')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Rules') }}</flux:navlist.item>
-                    <flux:navlist.item icon="home" :href="route('dummmy.sport1')" :current="request()->routeIs('dummmy.sport1')" wire:navigate>{{ __('Regulations') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('dummmy.sport1')" :current="request()->routeIs('dummmy.sport1')" wire:navigate>{{ __('Schedule') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('dummmy.sport1')" :current="request()->routeIs('dummmy.sport1')" wire:navigate>{{ __('Sports') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('dummmy.sport1')" :current="request()->routeIs('dummmy.sport1')" wire:navigate>{{ __('Result') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('tech.ruledetail')" :current="request()->routeIs('tech.ruledetail')" wire:navigate>{{ __('Rule Details') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('tech.ruleupdate')" :current="request()->routeIs('tech.ruleupdate')" wire:navigate>{{ __('Rule Update') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
