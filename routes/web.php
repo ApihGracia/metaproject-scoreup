@@ -1,31 +1,107 @@
 <?php
 
+// use App\Livewire\Admin\Login as AdminLogin;
+// use App\Livewire\Admin\Register as AdminRegister;
+// use App\Livewire\Admin\Dashboard as AdminDashboard;
+
+// use App\Livewire\Technician\Login as TechnicianLogin;
+// use App\Livewire\Technician\Register as TechnicianRegister;
+// use App\Livewire\Technician\Dashboard as TechnicianDashboard;
+
+// use App\Livewire\AdminLogin;
+// use App\Livewire\AdminRegister;
+
+use App\Livewire\Admin\AdminLogin as AdminLogin;
+use App\Livewire\Admin\AdminRegister as AdminRegister;
+
+use App\Livewire\Technician\TechnicianLogin as TechnicianLogin;
+use App\Livewire\Technician\TechnicianRegister as TechnicianRegister;
+
 use App\Livewire\ResultForm;
 use App\Livewire\ResultScore;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Livewire\TechnicianResultscore;
+use App\Livewire\TechnicianResultform;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+
+// Dashboard for any logged in + verified user
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Public User settings (web guard)    
+// Public authenticated user routes
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
-    
+
     // Add here — user must be authenticated
     Route::get('/result-score', ResultScore::class)->name('result.score');
     Route::get('/result-form', ResultForm::class)->name('result.form');
 
+    Route::get('/technician-resultscore', TechnicianResultscore::class)->name('technician.resultscore');
+    Route::get('/technician-resultform', TechnicianResultform::class)->name('technician-resultform');
 });
 
-require __DIR__.'/auth.php';
+// Admin Routes (admin guard)
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', AdminLogin::class)->name('login');
+    Route::get('/register', AdminRegister::class)->name('register');
+
+    Route::middleware('auth:admin')->group(function () {
+        // Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
+        // Route::get('/result-score', ResultScore::class)->name('result.score');
+        // Route::get('/result-form', ResultForm::class)->name('result.form');
+
+        // Add here — user must be authenticated
+        Route::get('/result-score', ResultScore::class)->name('result.score');
+        Route::get('/result-form', ResultForm::class)->name('result.form');
+
+        Route::get('/technician-resultscore', TechnicianResultscore::class)->name('technician.resultscore');
+        Route::get('/technician-resultform', TechnicianResultform::class)->name('technician-resultform');
+    });
+});
+
+// // Technician Routes (technician guard)
+Route::prefix('technician')->name('technician.')->group(function () {
+    Route::get('/login', TechnicianLogin::class)->name('login');
+    Route::get('/register', TechnicianRegister::class)->name('register');
+
+    Route::middleware('auth:technician')->group(function () {
+        // Route::get('/dashboard', TechnicianDashboard::class)->name('dashboard');
+        // Route::get('/resultscore', TechnicianResultscore::class)->name('resultscore');
+        // Route::get('/resultform', TechnicianResultform::class)->name('resultform');
+
+        // Add here — user must be authenticated
+        Route::get('/result-score', ResultScore::class)->name('result.score');
+        Route::get('/result-form', ResultForm::class)->name('result.form');
+
+        Route::get('/technician-resultscore', TechnicianResultscore::class)->name('technician.resultscore');
+        Route::get('/technician-resultform', TechnicianResultform::class)->name('technician-resultform');
+    });
+});
+
+// // Admin-only routes
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     Route::get('/result-score', ResultScore::class)->name('result.score');
+//     Route::get('/result-form', ResultForm::class)->name('result.form');
+// });
+
+// // Technician-only routes
+// Route::middleware(['auth', 'role:technician'])->group(function () {
+//     Route::get('/technician-resultscore', TechnicianResultscore::class)->name('technician.resultscore');
+//     Route::get('/technician-resultform', TechnicianResultform::class)->name('technician.resultform');
+// });
+
+
+require __DIR__ . '/auth.php';
