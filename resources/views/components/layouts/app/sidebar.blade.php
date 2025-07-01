@@ -19,9 +19,9 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                {{-- <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
+                </flux:navlist.group> --}}
 
                 {{-- <flux:navlist.group :heading="__('Dummy')" class="grid">
                     <flux:navlist.item icon="clipboard-list" :href="route('result.score')" :current="request()->routeIs('result.score')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
@@ -35,7 +35,9 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Sport') }}</flux:navlist.item>
                 </flux:navlist.group> --}}
 
-                @if (auth('admin')->check())
+
+
+                {{-- @if (auth('admin')->check())
                 <flux:navlist.group :heading="__('Admin Panel')" class="grid">
                     <flux:navlist.item icon="clipboard-list" :href="route('admin.result.score')" :current="request()->routeIs('admin.result.score')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
                     <flux:navlist.item icon="edit" :href="route('admin.result.form')" :current="request()->routeIs('admin.result.form')" wire:navigate>{{ __('Add Result') }}</flux:navlist.item>
@@ -44,6 +46,29 @@
                     <flux:navlist.group :heading="__('Technician Tools')" class="grid">
                         <flux:navlist.item icon="clipboard-list" :href="route('technician.resultscore')" :current="request()->routeIs('technician.resultscore')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
                         <flux:navlist.item icon="edit" :href="route('technician.resultform')" :current="request()->routeIs('technician.resultform')" wire:navigate>{{ __('Add Result') }}</flux:navlist.item>
+                    </flux:navlist.group>
+                @endif --}}
+
+                @if ($currentUser->hasRole('admin'))
+
+
+                    <flux:navlist.group :heading="__('General Panel')" class="grid">
+                        <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    </flux:navlist.group>
+                    <flux:navlist.group :heading="__('Admin Panel')" class="grid">
+                        <flux:navlist.item icon="clipboard-list" :href="route('admin.result.score')" :current="request()->routeIs('admin.result.score')" wire:navigate>{{ __('Admin Result Score') }}</flux:navlist.item>
+                        <flux:navlist.item icon="edit" :href="route('admin.result.form')" :current="request()->routeIs('admin.result.form')" wire:navigate>{{ __('Admin Add Result') }}</flux:navlist.item>
+                    </flux:navlist.group>
+
+                @elseif ($currentUser->hasRole('technician'))
+                    <flux:navlist.group :heading="__('General Panel')" class="grid">
+                        <flux:navlist.item icon="home" :href="route('techniciandashboard')" :current="request()->routeIs('techniciandashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    </flux:navlist.group>
+                    <flux:navlist.group :heading="__('Technician Tools')" class="grid">
+                        <flux:navlist.item icon="clipboard-list" :href="route('result.score')" :current="request()->routeIs('result.score')" wire:navigate>{{ __('Technician Result Score') }}</flux:navlist.item>
+                        <flux:navlist.item icon="edit" :href="route('result.form')" :current="request()->routeIs('result.form')" wire:navigate>{{ __('Technician Add Result') }}</flux:navlist.item>
+                        {{-- <flux:navlist.item icon="clipboard-list" :href="route('technician.resultscore')" :current="request()->routeIs('technician.resultscore')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
+                        <flux:navlist.item icon="edit" :href="route('technician.resultform')" :current="request()->routeIs('technician.resultform')" wire:navigate>{{ __('Add Result') }}</flux:navlist.item> --}}
                     </flux:navlist.group>
                 @endif
                 

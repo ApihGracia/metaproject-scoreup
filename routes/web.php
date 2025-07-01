@@ -52,10 +52,14 @@ Route::middleware(['auth'])->group(function () {
 // Authenticated Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', AdminDashboard::class)->name('dashboard');
+    Route::get('result-score', ResultScore::class)->name('result.score');
+    Route::get('result-form', ResultForm::class)->name('result.form');
 });
 
 Route::middleware(['auth', 'role:technician'])->group(function () {
     Route::get('technician/dashboard', TechnicianDashboard::class)->name('techniciandashboard');
+    Route::get('result-score', ResultScore::class)->name('result.score');
+    Route::get('result-form', ResultForm::class)->name('result.form');
 });
 
 // 
