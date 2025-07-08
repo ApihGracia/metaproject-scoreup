@@ -54,8 +54,12 @@
                         <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     </flux:navlist.group>
                     <flux:navlist.group :heading="__('Admin Panel')" class="grid">
-                        <flux:navlist.item icon="clipboard-list" :href="route('admin.result.score')" :current="request()->routeIs('admin.result.score')" wire:navigate>{{ __('Admin Result Score') }}</flux:navlist.item>
-                        <flux:navlist.item icon="edit" :href="route('admin.result.form')" :current="request()->routeIs('admin.result.form')" wire:navigate>{{ __('Admin Add Result') }}</flux:navlist.item>
+                        <flux:navlist.item icon="clipboard-list" :href="route('adminteam')" :current="request()->routeIs('adminteam')" wire:navigate>{{ __('Team') }}</flux:navlist.item>
+                        <flux:navlist.item icon="clipboard-list" :href="route('adminsport')" :current="request()->routeIs('adminsport')" wire:navigate>{{ __('Sport') }}</flux:navlist.item>
+                        {{-- <flux:navlist.item icon="clipboard-list" :href="route('admin.result.score')" :current="request()->routeIs('admin.result.score')" wire:navigate>{{ __('Sport Detail') }}</flux:navlist.item> --}}
+                        <flux:navlist.item icon="edit" :href="route('adminrule')" :current="request()->routeIs('adminrule')" wire:navigate>{{ __('Rules') }}</flux:navlist.item>
+                        {{-- <flux:navlist.item icon="edit" :href="route('admin.result.form')" :current="request()->routeIs('admin.result.form')" wire:navigate>{{ __('Rules') }}</flux:navlist.item> --}}
+                        <flux:navlist.item icon="edit" :href="route('adminschedule')" :current="request()->routeIs('adminschedule')" wire:navigate>{{ __('Schedule') }}</flux:navlist.item>
                     </flux:navlist.group>
 
                 @elseif ($currentUser->hasRole('technician'))
@@ -63,8 +67,10 @@
                         <flux:navlist.item icon="home" :href="route('techniciandashboard')" :current="request()->routeIs('techniciandashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     </flux:navlist.group>
                     <flux:navlist.group :heading="__('Technician Tools')" class="grid">
-                        <flux:navlist.item icon="clipboard-list" :href="route('result.score')" :current="request()->routeIs('result.score')" wire:navigate>{{ __('Technician Result Score') }}</flux:navlist.item>
-                        <flux:navlist.item icon="edit" :href="route('result.form')" :current="request()->routeIs('result.form')" wire:navigate>{{ __('Technician Add Result') }}</flux:navlist.item>
+                        <flux:navlist.item icon="clipboard-list" :href="route('technicianrule')" :current="request()->routeIs('technicianrule')" wire:navigate>{{ __('Rules') }}</flux:navlist.item>
+                        <flux:navlist.item icon="clipboard-list" :href="route('technicianschedule')" :current="request()->routeIs('technicianschedule')" wire:navigate>{{ __('Schedule') }}</flux:navlist.item>
+                        {{-- <flux:navlist.item icon="clipboard-list" :href="route('result.score')" :current="request()->routeIs('result.score')" wire:navigate>{{ __('Technician Result Score') }}</flux:navlist.item> --}}
+                        {{-- <flux:navlist.item icon="edit" :href="route('result.form')" :current="request()->routeIs('result.form')" wire:navigate>{{ __('Technician Add Result') }}</flux:navlist.item> --}}
                         {{-- <flux:navlist.item icon="clipboard-list" :href="route('technician.resultscore')" :current="request()->routeIs('technician.resultscore')" wire:navigate>{{ __('Result Score') }}</flux:navlist.item>
                         <flux:navlist.item icon="edit" :href="route('technician.resultform')" :current="request()->routeIs('technician.resultform')" wire:navigate>{{ __('Add Result') }}</flux:navlist.item> --}}
                     </flux:navlist.group>

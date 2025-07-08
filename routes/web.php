@@ -14,10 +14,16 @@
 use App\Livewire\Admin\AdminLogin as AdminLogin;
 use App\Livewire\Admin\AdminRegister as AdminRegister;
 use App\Livewire\Admin\AdminDashboard as AdminDashboard;
+use App\Livewire\Admin\AdminSport as AdminSport;
+use App\Livewire\Admin\AdminTeam as AdminTeam;
+use App\Livewire\Admin\AdminRule as AdminRule;
+use App\Livewire\Admin\AdminSchedule as AdminSchedule;
 
 use App\Livewire\Technician\TechnicianLogin as TechnicianLogin;
 use App\Livewire\Technician\TechnicianRegister as TechnicianRegister;
 use App\Livewire\Technician\TechnicianDashboard as TechnicianDashboard;
+use App\Livewire\Technician\TechnicianRule as TechnicianRule;
+use App\Livewire\Technician\TechnicianSchedule as TechnicianSchedule;
 
 use App\Livewire\ResultForm;
 use App\Livewire\ResultScore;
@@ -52,12 +58,18 @@ Route::middleware(['auth'])->group(function () {
 // Authenticated Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', AdminDashboard::class)->name('dashboard');
+    Route::get('admin/admin-team', AdminTeam::class)->name('adminteam');
+    Route::get('admin/admin-sport', AdminSport::class)->name('adminsport');
+    Route::get('admin/admin-rule', AdminRule::class)->name('adminrule');
+    Route::get('admin/admin-schedule', AdminSchedule::class)->name('adminschedule');
     Route::get('result-score', ResultScore::class)->name('result.score');
     Route::get('result-form', ResultForm::class)->name('result.form');
 });
 
 Route::middleware(['auth', 'role:technician'])->group(function () {
     Route::get('technician/dashboard', TechnicianDashboard::class)->name('techniciandashboard');
+    Route::get('technician/technicianrule', TechnicianRule::class)->name('technicianrule');
+    Route::get('technician/technicianschedule', TechnicianSchedule::class)->name('technicianschedule');
     Route::get('result-score', ResultScore::class)->name('result.score');
     Route::get('result-form', ResultForm::class)->name('result.form');
 });

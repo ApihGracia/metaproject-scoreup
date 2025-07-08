@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Ensure no duplicate team names 
+            $table->string('name')->unique();
+            $table->string('description')->nullable();
+            $table->string('photo')->nullable(); // stores logo file path
             $table->timestamps();
         });
-
     }
 
     /**
