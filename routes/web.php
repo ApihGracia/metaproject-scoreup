@@ -25,6 +25,8 @@ use App\Livewire\Technician\TechnicianDashboard as TechnicianDashboard;
 use App\Livewire\Technician\TechnicianRule as TechnicianRule;
 use App\Livewire\Technician\TechnicianSchedule as TechnicianSchedule;
 
+use App\Livewire\UserRule;
+
 use App\Livewire\ResultForm;
 use App\Livewire\ResultScore;
 use App\Livewire\Settings\Appearance;
@@ -35,10 +37,11 @@ use App\Livewire\TechnicianResultscore;
 use App\Livewire\TechnicianResultform;
 use Illuminate\Support\Facades\Route;
 
+Route::get('user-rule', UserRule::class)->name('user-rule');
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
 
 // Dashboard for any logged in + verified user
 // Route::view('dashboard', 'dashboard')
@@ -53,6 +56,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+
+    // Route::get('user-rule', UserRule::class)->name('userrule');
 });
 
 // Authenticated Admin Routes
@@ -66,6 +71,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('result-form', ResultForm::class)->name('result.form');
 });
 
+// Authenticated Technician Routes
 Route::middleware(['auth', 'role:technician'])->group(function () {
     Route::get('technician/dashboard', TechnicianDashboard::class)->name('techniciandashboard');
     Route::get('technician/technicianrule', TechnicianRule::class)->name('technicianrule');

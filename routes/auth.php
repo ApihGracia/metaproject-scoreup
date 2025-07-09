@@ -20,11 +20,15 @@ use App\Livewire\Technician\TechnicianDashboard as TechnicianDashboard;
 use App\Livewire\TechnicianResultform;
 use App\Livewire\TechnicianResultscore;
 
+use App\Livewire\UserRule;
+
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)->name('login');
     Route::get('register', Register::class)->name('register');
     Route::get('forgot-password', ForgotPassword::class)->name('password.request');
     Route::get('reset-password/{token}', ResetPassword::class)->name('password.reset');
+
+    Route::get('user-rule', UserRule::class)->name('user-rule');
 });
 
 Route::middleware('auth')->group(function () {
