@@ -13,6 +13,17 @@ class AdminSchedule extends Component
     public $sport_id, $gender = 'Male', $team_a_id, $team_b_id, $match_date, $match_time, $venue, $stage, $editId = null;
     public $score_a, $score_b, $round = 'Quarterfinal';
 
+    public $showDetail = false;
+    public $search = '';
+    public $filterSport = '';
+    public $filterStatus = '';
+
+    public $title;
+    public $date;
+    public $description;
+
+    public $showModal = false;
+
     protected $rules = [
         'sport_id' => 'required|exists:sports,id',
         'gender' => 'required|in:Male,Female,Mixed',
@@ -40,6 +51,8 @@ class AdminSchedule extends Component
         $this->loadSchedules();
     }
 
+    // Removed duplicate edit($id) method
+
     public function updatedSport_id()
     {
         $sport = Sport::find($this->sport_id);
@@ -53,19 +66,37 @@ class AdminSchedule extends Component
     {
         $this->validate();
 
+        $data = [
+            'sport_id' => $this->sport_id,
+            'gender' => $this->gender,
+            'team_a_id' => $this->team_a_id,
+            'team_b_id' => $this->team_b_id,
+            'match_date' => $this->match_date,
+            'match_time' => $this->match_time,
+            'venue' => $this->venue,
+            'round' => $this->round,
+            'stage' => $this->stage,
+            'score_a' => $this->score_a,
+            'score_b' => $this->score_b,
+            // handle photo upload if needed
+        ];
+
         if ($this->editId) {
-            $schedule = Schedule::find($this->editId);
-            $schedule->update($this->only([
-                'sport_id', 'gender', 'team_a_id', 'team_b_id', 'match_date', 'match_time', 'venue', 'stage', 'score_a', 'score_b', 'round'
-            ]));
+            $match = \App\Models\Schedule::findOrFail($this->editId);
+            $match->update($data);
+            $this->dispatch('showMessage', 'Schedule updated successfully.');
         } else {
-            Schedule::create($this->only([
-                'sport_id', 'gender', 'team_a_id', 'team_b_id', 'match_date', 'match_time', 'venue', 'stage', 'score_a', 'score_b', 'round'
-            ]));
+            \App\Models\Schedule::create($data);
+            $this->dispatch('showMessage', 'Schedule created successfully.');
         }
 
-        $this->reset(['team_a_id', 'team_b_id', 'match_date', 'match_time', 'venue', 'stage', 'editId', 'score_a', 'score_b', 'round']);
-        $this->loadSchedules();
+        $this->resetForm();
+        $this->showModal = false;
+        $this->loadSchedules(); // reload data
+
+
+
+        
     }
 
     public function edit($id)
@@ -90,6 +121,7 @@ class AdminSchedule extends Component
     {
         Schedule::findOrFail($id)->delete();
         $this->loadSchedules();
+        $this->dispatch('showMessage', 'Schedule deleted successfully.');
     }
 
     public function finalize($id)
@@ -98,6 +130,7 @@ class AdminSchedule extends Component
         $schedule->is_done = true;
         $schedule->save();
         $this->loadSchedules();
+        $this->dispatch('showMessage', 'Schedule finalized successfully.');
     }
 
     public function loadSchedules()
@@ -230,7 +263,7 @@ class AdminSchedule extends Component
                     'is_done' => false,
                     'score_a' => null,
                     'score_b' => null,
-                    'status' => 'OnGoing',
+                    'round' => 'OnGoing',
                 ]);
             }
         }
@@ -242,6 +275,51 @@ class AdminSchedule extends Component
         if (strtolower($currentRound) === 'quarterfinal') return 'Semifinal';
         if (strtolower($currentRound) === 'semifinal') return 'Final';
         return '';
+    }
+
+    //schedule-detail.blade.php
+    public function showScheduleDetail()
+    {
+        $this->showDetail = true;
+    }
+
+    public function hideScheduleDetail()
+    {
+        $this->showDetail = false;
+        $this->reset(['search', 'filterSport', 'filterStatus']);
+    }
+
+    public function getFilteredSchedulesProperty()
+    {
+        $query = \App\Models\Schedule::with(['sport', 'teamA', 'teamB']);
+
+        if ($this->search) {
+            $query->where(function($q) {
+                $q->whereHas('teamA', fn($t) => $t->where('name', 'like', "%{$this->search}%"))
+                ->orWhereHas('teamB', fn($t) => $t->where('name', 'like', "%{$this->search}%"))
+                ->orWhere('venue', 'like', "%{$this->search}%");
+            });
+        }
+
+        if ($this->filterSport) {
+            $query->where('sport_id', $this->filterSport);
+        }
+
+        if ($this->filterStatus !== '') {
+            $query->where('is_done', $this->filterStatus === 'finalized');
+        }
+
+        return $query->orderBy('match_date')->get();
+    }
+
+    public function goBack()
+    {
+        return redirect()->route('adminschedule');
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['title', 'date', 'description']); // include all fields you want to reset
     }
 
     public function render()

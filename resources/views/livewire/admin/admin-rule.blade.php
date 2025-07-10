@@ -31,25 +31,25 @@
         </div>
         <div>
             <label class="block font-semibold mb-1">Title</label>
-            <input type="text" wire:model.defer="title" class="border p-2 rounded w-full">
+            <flux:input type="text" wire:model.defer="title"/>
             @error('title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Description</label>
-            <textarea wire:model.defer="description" class="border p-2 rounded w-full"></textarea>
+            <flux:textarea wire:model.defer="description" class="border p-2 rounded w-full"></flux:textarea>
             @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">PDF File</label>
-            <input type="file" wire:model="pdf" accept="application/pdf" class="border p-2 rounded w-full">
+            <flux:input type="file" wire:model="pdf" accept="application/pdf" class="border p-2 rounded w-full"/>
             @error('pdf') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Upload Rule PDF</button>
-        {{-- <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+        <flux:button variant="primary" type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Upload Rule PDF</flux:button>
+        {{-- <flux:button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
             {{ $editId ? 'Update Rule' : 'Add Rule' }}
-        </button> --}}
+        </flux:button> --}}
         {{-- @if($editId)
-            <button type="button" wire:click="$set('editId', null)" class="bg-gray-400 text-white px-4 py-2 rounded ml-2">Cancel</button>
+            <flux:button type="button" wire:click="$set('editId', null)" class="bg-gray-400 text-white px-4 py-2 rounded ml-2">Cancel</flux:button>
         @endif --}}
     </form>
 
@@ -85,8 +85,8 @@
                         @endif
                     </td>
                     <td class="border px-4 py-2">
-                        <button wire:click="delete({{ $rule->RuleID }})" class="bg-red-500 text-white px-2 py-1 rounded"
-                            onclick="return confirm('Are you sure you want to delete this rule and its PDF?')">Delete</button>
+                        <flux:button variant="primary" color="red" wire:click="delete({{ $rule->RuleID }})" class="bg-red-500 text-white px-2 py-1 rounded"
+                            onclick="return confirm('Are you sure you want to delete this rule and its PDF?')">Delete</flux:button>
                     </td>
                     {{-- <td class="border px-4 py-2">
                         <button wire:click="edit({{ $rule->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</button>
