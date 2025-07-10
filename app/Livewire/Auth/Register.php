@@ -46,6 +46,13 @@ class Register extends Component
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        // $this->redirect(route('dashboard', absolute: false), navigate: true);
+        if ($user->hasRole('admin')) {
+            $this->redirect(route('dashboard'), navigate: true);
+        } elseif ($user->hasRole('technician')) {
+            $this->redirect(route('techniciandashboard'), navigate: true);
+        } else {
+            $this->redirect(route('dashboard'), navigate: true);
+        }
     }
 }

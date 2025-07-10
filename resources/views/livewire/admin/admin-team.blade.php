@@ -26,7 +26,7 @@
     <form wire:submit.prevent="save" class="mb-6 space-y-4">
         <div>
             <label class="block font-semibold mb-1">Team Name</label>
-            <input type="text" wire:model.defer="name" class="border p-2 rounded w-full">
+            <flux:input type="text" wire:model.defer="name"/>
             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
@@ -43,13 +43,13 @@
             @endif
         </div>
         <div class="flex space-x-2">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+            <flux:button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
                 {{ $editId ? 'Update Team' : 'Add Team' }}
-            </button>
+            </flux:button>
             @if($editId)
-                <button type="button" wire:click="cancelEdit" class="bg-gray-400 text-white px-4 py-2 rounded">
+                <flux:button variant="danger" type="button" wire:click="cancelEdit" class="bg-gray-400 text-white px-4 py-2 rounded">
                     Cancel
-                </button>
+                </flux:button>
             @endif
         </div>
     </form>
@@ -58,6 +58,7 @@
     <table class="w-full table-auto border-collapse border border-gray-300">
         <thead>
             <tr class="bg-gray-200">
+                <th class="border px-4 py-2">Team Logo</th>
                 <th class="border px-4 py-2">Team Name</th>
                 <th class="border px-4 py-2">Description</th>
                 <th class="border px-4 py-2">Actions</th>
@@ -74,9 +75,9 @@
                     <td class="border px-4 py-2">{{ $team->name }}</td>
                     <td class="border px-4 py-2">{{ $team->description }}</td>
                     <td class="border px-4 py-2">
-                        <button wire:click="edit({{ $team->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</button>
-                        <button wire:click="delete({{ $team->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2"
-                            onclick="return confirm('Are you sure you want to delete this team?')">Delete</button>
+                        <flux:button wire:click="edit({{ $team->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</flux:button>
+                        <flux:button variant="danger" wire:click="delete({{ $team->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2"
+                            onclick="return confirm('Are you sure you want to delete this team?')">Delete</flux:button>
                     </td>
                 </tr>
             @empty
