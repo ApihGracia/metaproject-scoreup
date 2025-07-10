@@ -11,6 +11,7 @@
     <form wire:submit.prevent="save" class="mb-6 space-y-4">
     {{-- <form wire:submit.prevent="{{ $editId ? 'update' : 'save' }}"> --}}
         <div>
+            
             <label class="block font-semibold mb-1">Sport</label>
             {{-- <select wire:model="sport_id" class="border p-2 rounded w-full">
                 <option value="">Select Sport</option>

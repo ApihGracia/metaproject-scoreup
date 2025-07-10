@@ -118,13 +118,74 @@ class AdminSchedule extends Component
 
     // --- Bracket logic below ---
 
+    // public function allMatchesDone($sport_id, $gender, $round)
+    // {
+    //     $total = Schedule::where('sport_id', $sport_id)
+    //         ->where('gender', $gender)
+    //         ->where('round', $round)
+    //         ->count();
+    //     $done = Schedule::where('sport_id', $sport_id)
+    //         ->where('gender', $gender)
+    //         ->where('round', $round)
+    //         ->where('is_done', true)
+    //         ->count();
+    //     return $total > 0 && $total === $done;
+    // }
+
+    // public function generateNextRound($sport_id, $gender, $currentRound)
+    // {
+    //     $matches = Schedule::where('sport_id', $sport_id)
+    //         ->where('gender', $gender)
+    //         ->where('round', $currentRound)
+    //         ->where('is_done', true)
+    //         ->orderBy('id')
+    //         ->get();
+
+    //     $winners = [];
+    //     foreach ($matches as $match) {
+    //         if ($match->score_a > $match->score_b) {
+    //             $winners[] = $match->team_a_id;
+    //         } else {
+    //             $winners[] = $match->team_b_id;
+    //         }
+    //     }
+
+    //     $nextRound = $this->getNextRoundName($currentRound);
+    //     for ($i = 0; $i < count($winners); $i += 2) {
+    //         if (isset($winners[$i+1])) {
+    //             Schedule::create([
+    //                 'sport_id' => $sport_id,
+    //                 'gender' => $gender,
+    //                 'team_a_id' => $winners[$i],
+    //                 'team_b_id' => $winners[$i+1],
+    //                 'match_date' => null,
+    //                 'match_time' => null,
+    //                 'venue' => '',
+    //                 'stage' => $nextRound,
+    //                 'round' => $nextRound,
+    //                 'is_done' => false,
+    //                 'score_a' => null,
+    //                 'score_b' => null,
+    //             ]);
+    //         }
+    //     }
+    //     $this->loadSchedules();
+    // }
+
+    // public function getNextRoundName($currentRound)
+    // {
+    //     if (strtolower($currentRound) === 'quarterfinal') return 'Semifinal';
+    //     if (strtolower($currentRound) === 'semifinal') return 'Final';
+    //     return '';
+    // }
+
     public function allMatchesDone($sport_id, $gender, $round)
     {
-        $total = Schedule::where('sport_id', $sport_id)
+        $total = \App\Models\Schedule::where('sport_id', $sport_id)
             ->where('gender', $gender)
             ->where('round', $round)
             ->count();
-        $done = Schedule::where('sport_id', $sport_id)
+        $done = \App\Models\Schedule::where('sport_id', $sport_id)
             ->where('gender', $gender)
             ->where('round', $round)
             ->where('is_done', true)
@@ -134,7 +195,7 @@ class AdminSchedule extends Component
 
     public function generateNextRound($sport_id, $gender, $currentRound)
     {
-        $matches = Schedule::where('sport_id', $sport_id)
+        $matches = \App\Models\Schedule::where('sport_id', $sport_id)
             ->where('gender', $gender)
             ->where('round', $currentRound)
             ->where('is_done', true)
@@ -148,12 +209,15 @@ class AdminSchedule extends Component
             } else {
                 $winners[] = $match->team_b_id;
             }
+            // Optionally update status to "Finalized"
+            $match->status = 'Finalized';
+            $match->save();
         }
 
         $nextRound = $this->getNextRoundName($currentRound);
         for ($i = 0; $i < count($winners); $i += 2) {
             if (isset($winners[$i+1])) {
-                Schedule::create([
+                \App\Models\Schedule::create([
                     'sport_id' => $sport_id,
                     'gender' => $gender,
                     'team_a_id' => $winners[$i],
@@ -166,10 +230,11 @@ class AdminSchedule extends Component
                     'is_done' => false,
                     'score_a' => null,
                     'score_b' => null,
+                    'status' => 'OnGoing',
                 ]);
             }
         }
-        $this->loadSchedules();
+        // Optionally reload schedules or emit event
     }
 
     public function getNextRoundName($currentRound)

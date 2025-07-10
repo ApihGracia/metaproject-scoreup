@@ -3,6 +3,18 @@
 
     <form wire:submit.prevent="save" class="mb-6 space-y-4">
         <div>
+
+            @if($this->allMatchesDone($sport_id, $gender, 'Quarterfinal'))
+                <button wire:click="generateNextRound({{ $sport_id }}, '{{ $gender }}', 'Quarterfinal')" class="mt-4 bg-purple-600 text-white px-4 py-2 rounded">
+                    Generate Semifinal
+                </button>
+            @endif
+            @if($this->allMatchesDone($sport_id, $gender, 'Semifinal'))
+                <button wire:click="generateNextRound({{ $sport_id }}, '{{ $gender }}', 'Semifinal')" class="mt-2 bg-pink-600 text-white px-4 py-2 rounded">
+                    Generate Final
+                </button>
+            @endif
+
             <label>Sport</label>
             <select wire:model="sport_id" class="border p-2 rounded w-full">
                 <option value="">Select Sport</option>
@@ -78,7 +90,7 @@
     </form>
 
     <h2 class="text-xl font-semibold mb-2">All Matches</h2>
-    <table class="w-full table-auto border-collapse border border-gray-300">
+    <table class="w-full table-auto border-collapse border rounded-3xl overflow-hidden shadow-lg border-gray-300">
         <thead>
             <tr class="bg-gray-200">
                 <th class="border px-4 py-2">Date</th>
