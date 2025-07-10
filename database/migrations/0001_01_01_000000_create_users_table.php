@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role')->default('public'); // New: role column (admin, technician, public)
+            $table->string('sport')->nullable();       // Optional: sport for technicians
             $table->rememberToken();
             $table->timestamps();
         });
