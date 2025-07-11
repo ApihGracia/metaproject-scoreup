@@ -11,7 +11,7 @@
             @endforeach --}}
             {{-- PAGE 1: Show sport list --}}
             @foreach($sports as $sport)
-                <button wire:click="selectSport('{{ $sport->sport_name }}')">{{ $sport->sport_name }}</button>
+                <flux:button variant="primary" wire:click="selectSport('{{ $sport->sport_name }}')" >{{ $sport->sport_name }}</flux:button>
             @endforeach
         </div>
     </table>
@@ -89,11 +89,11 @@
                 </div>
             </div>
             <div class="flex space-x-2">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded" @if($is_done) disabled @endif>
+                <button type="submit" class="bg-blue-600 text-black px-4 py-2 rounded" @if($is_done) disabled @endif>
                     Save Score
                 </button>
                 @if(!$is_done)
-                    <button type="button" wire:click="finalize" class="bg-green-600 text-white px-4 py-2 rounded">
+                    <button type="button" wire:click="finalize" class="bg-green-600 text-black px-4 py-2 rounded">
                         Done (Finalize)
                     </button>
                 @endif

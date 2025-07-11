@@ -28,39 +28,39 @@
     <form wire:submit.prevent="save" class="mb-6 space-y-4">
         <div>
             <label class="block font-semibold mb-1">Sport Name</label>
-            <input type="text" wire:model.defer="sport_name" class="border p-2 rounded w-full">
+            <flux:input type="text" wire:model.defer="sport_name"/>
             @error('sport_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Description</label>
-            <textarea wire:model.defer="description" class="border p-2 rounded w-full"></textarea>
+            <flux:textarea wire:model.defer="description" class="border p-2 rounded w-full"></flux:textarea>
             @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Gender Category</label>
-            <select wire:model.defer="gender" class="border p-2 rounded w-full">
+            <flux:select wire:model.defer="gender" class="border p-2 rounded w-full">
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Mixed">Mixed</option>
-            </select>
+            </flux:select>
             @error('gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Photo (optional)</label>
-            <input type="file" wire:model="photo" class="border p-2 rounded w-full" accept="image/*">
+            <flux:input type="file" wire:model="photo" class="border p-2 rounded w-full" accept="image/*"/>
             @error('photo') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             @if($photo)
                 <img src="{{ $photo->temporaryUrl() }}" class="h-16 mt-2">
             @endif
         </div>
         <div class="flex space-x-2">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+            <flux:button variant="primary" type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
                 {{ $editId ? 'Update Sport' : 'Add Sport' }}
-            </button>
+            </flux:button>
             @if($editId)
-                <button type="button" wire:click="cancelEdit" class="bg-gray-400 text-white px-4 py-2 rounded">
+                <flux:button type="button" wire:click="cancelEdit" class="bg-gray-400 text-white px-4 py-2 rounded">
                     Cancel
-                </button>
+                </flux:button>
             @endif
         </div>
     </form>
@@ -91,9 +91,9 @@
                         <button wire:click="edit({{ $sport->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</button>
                     </td> --}}
                     <td class="border px-4 py-2">
-                        <button wire:click="edit({{ $sport->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</button>
-                        <button wire:click="delete({{ $sport->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2"
-                            onclick="return confirm('Are you sure you want to delete this sport?')">Delete</button>
+                        <flux:button variant="primary" variant="primary" wire:click="edit({{ $sport->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</flux:button>
+                        <flux:button variant="primary" color="red" wire:click="delete({{ $sport->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2"
+                            onclick="return confirm('Are you sure you want to delete this sport?')">Delete</flux:button>
                     </td>
                 </tr>
             @empty

@@ -26,17 +26,18 @@
     <form wire:submit.prevent="save" class="mb-6 space-y-4">
         <div>
             <label class="block font-semibold mb-1">Team Name</label>
-            <input type="text" wire:model.defer="name" class="border p-2 rounded w-full">
+            <flux:input type="text" wire:model.defer="name"/>
+            {{-- <flux:input type="text" wire:model.defer="name" class="shadow-md bg-white rounded px-4 py-2"/> --}}
             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Description</label>
-            <textarea wire:model.defer="description" class="border p-2 rounded w-full"></textarea>
+            <flux:textarea wire:model.defer="description" class="border p-2 rounded w-full"></flux:textarea>
             @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
         <div>
             <label class="block font-semibold mb-1">Team Photo (optional)</label>
-            <input type="file" wire:model="photo" class="border p-2 rounded w-full" accept="image/*">
+            <flux:input type="file" wire:model="photo" class="border p-2 rounded w-full" accept="image/*"/>
             @error('photo') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             @if($photo)
                 <img src="{{ $photo->temporaryUrl() }}" class="h-16 mt-2">
@@ -58,6 +59,7 @@
     <table class="w-full table-auto border-collapse border border-gray-300">
         <thead>
             <tr class="bg-gray-200">
+                <th class="border px-4 py-2">Team Logo</th>
                 <th class="border px-4 py-2">Team Name</th>
                 <th class="border px-4 py-2">Description</th>
                 <th class="border px-4 py-2">Actions</th>
@@ -66,7 +68,7 @@
         <tbody>
             @forelse($teams as $team)
                 <tr>
-                    <td class="border px-4 py-2">
+                    <td class="border px-4 py-2 text-center">
                         @if($team->photo)
                             <img src="{{ asset('storage/'.$team->photo) }}" class="h-10">
                         @endif
@@ -74,9 +76,9 @@
                     <td class="border px-4 py-2">{{ $team->name }}</td>
                     <td class="border px-4 py-2">{{ $team->description }}</td>
                     <td class="border px-4 py-2">
-                        <button wire:click="edit({{ $team->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded">Edit</button>
-                        <button wire:click="delete({{ $team->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2"
-                            onclick="return confirm('Are you sure you want to delete this team?')">Delete</button>
+                        <flux:button wire:click="edit({{ $team->id }})" class="bg-yellow-400 text-white px-2 py-1 rounded" variant="primary">Edit</flux:button>
+                        <flux:button wire:click="delete({{ $team->id }})" class="bg-red-500 text-white px-2 py-1 rounded ml-2" variant="primary" color="red"
+                            onclick="return confirm('Are you sure you want to delete this team?')">Delete</flux:button>
                     </td>
                 </tr>
             @empty
