@@ -9,9 +9,10 @@
         </div>
         <x-flux-card class="bg-white rounded-2xl shadow p-8">
             <div class="flex border-b border-[#E5E7EB] mb-8 gap-12">
-                <a href="{{ route('settings.profile') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.profile') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Profile</a>
-                <a href="{{ route('settings.password') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.password') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Password</a>
-                <a href="{{ route('settings.appearance') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.appearance') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Appearance</a>
+                <flux:button variant="primary" type="submit" href="{{ route('settings.profile') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.profile') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Profile</flux:button>
+                <flux:button variant="primary" type="submit" href="{{ route('settings.password') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.password') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Password</flux:button>
+                {{-- <a href="{{ route('settings.appearance') }}" class="pb-3 text-base font-medium text-[#1F2937] border-b-2 {{ request()->routeIs('settings.appearance') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Appearance</a> --}}
+                <flux:button variant="primary" type="submit" href="{{ route('settings.appearance') }}" class="pb-3 text-base font-medium mb-4 text-[#1F2937] border-b-2 {{ request()->routeIs('settings.appearance') ? 'border-[#DC2626]' : 'border-transparent' }} hover:text-[#DC2626] hover:border-[#F97316] transition">Appearance</flux:button>
             </div>
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-[#1F2937]">{{ $heading ?? '' }}</h2>
