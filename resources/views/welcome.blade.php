@@ -13,7 +13,7 @@
         body {
             margin: 0;
             font-family: 'Montserrat', Arial, sans-serif;
-            background: #F9FAFB;
+            background: #E9E3E6;
             color: #1F2937;
         }
         .nav {
@@ -217,6 +217,11 @@
             font-weight: 700;
             color: #22C55E;
         }
+        .schedule-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
         @media (max-width: 1100px) {
             .main-card-row, .schedule-section { max-width: 100%; }
             .schedule-grid { grid-template-columns: repeat(2, 1fr); }
@@ -245,6 +250,13 @@
             @if (Route::has('register'))
                 <a href="{{ route('register') }}">Register</a>
             @endif
+        </div>
+    </div>
+
+    <!-- Single Card View for Landscape Poster -->
+    <div style="width:100%; display:flex; justify-content:center; align-items:center; margin-top:2rem;">
+        <div class="main-card" style="max-width:1000px; width:100%; margin:0 auto; display:flex; flex-direction:column; align-items:center;">
+            <img src="/storage/backgrounds/MAIN_POSTER.jpg" alt="Landscape Poster" class="slider-img" style="height:320px; object-fit:cover; border-radius:1.5rem; box-shadow:0 2px 12px rgba(220,38,38,0.10); display:block; margin:auto;">
         </div>
     </div>
 
@@ -310,8 +322,56 @@
                     </div>
                 </div>
             </div>
+
             <template x-if="viewType === 'grid'">
+                {{-- <div class="schedule-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @php
+                    $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
+                @endphp
+                @forelse($schedules as $match)
+                    <div class="match-card flex flex-col gap-2">
+                        <div class="flex items-center gap-2 mb-1">
+
+                            @if($match->teamA && $match->teamA->photo)
+                                <img src="{{ asset('storage/' . $match->teamA->photo) }}" alt="logo" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+                            @else
+                                <span class="inline-block w-7 h-7 rounded-full bg-gray-200 border border-gray-300"></span>
+                            @endif
+
+                            <span class="font-bold text-base">{{ $match->teamA->name ?? '-' }}</span>
+                            <span class="mx-2 font-bold text-gray-600">vs</span>
+
+                            @if($match->teamB && $match->teamB->photo)
+                                <img src="{{ asset('storage/' . $match->teamB->photo) }}" alt="logo" class="w-7 h-7 rounded-full object-cover border border-gray-300" />
+                            @else
+                                <span class="inline-block w-7 h-7 rounded-full bg-gray-200 border border-gray-300"></span>
+                            @endif
+
+                            <span class="font-bold text-base">{{ $match->teamB->name ?? '-' }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="font-semibold text-gray-700">Gender:</span>
+                            <span>{{ $match->gender }}</span>
+                            <span class="ml-4 font-semibold text-gray-700">Score:</span>
+                            <span class="font-bold">{{ $match->score_a ?? '-' }} : {{ $match->score_b ?? '-' }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="font-semibold text-gray-700">Status:</span>
+                            @if($match->is_done)
+                                <span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Finalized</span>
+                            @else
+                                <span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">Ongoing</span>
+                            @endif
+                        </div>
+                    </div>
+                    @empty
+                        <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
+                    @endforelse
+                </div> --}}
                 <div class="schedule-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @php
+                        $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
+                    @endphp
                     <template x-for="match in filteredSchedules" :key="match.id">
                         <div class="match-card">
                             <div class="match-type" x-text="match.sport.sport_name"></div>
@@ -329,28 +389,42 @@
                     </template>
                 </div>
             </template>
+
             <template x-if="viewType === 'list'">
-                <div class="flex flex-col gap-6">
-                    <template x-for="match in sortedSchedules" :key="match.id">
-                        <div class="bg-gray-900 rounded-2xl shadow-lg p-6 flex items-center justify-between border border-gray-700 hover:shadow-xl transition-shadow">
-                            <div class="flex items-center gap-4 w-1/3">
-                                <img :src="match.teamA.photo ? match.teamA.photo : '/scoreup-logo.svg'" class="h-12 w-12 rounded-full object-cover" alt="Logo">
-                                <span class="text-white font-bold text-lg" x-text="match.teamA.name"></span>
-                            </div>
-                            <div class="flex flex-col items-center w-1/3">
-                                <span class="text-yellow-400 font-bold text-xl" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
-                                <span class="text-gray-300 text-sm" x-text="match.match_date + ' • ' + match.match_time"></span>
-                            </div>
-                            <div class="flex items-center gap-4 w-1/3 justify-end">
-                                <img :src="match.teamB.photo ? match.teamB.photo : '/scoreup-logo.svg'" class="h-12 w-12 rounded-full object-cover" alt="Logo">
-                                <span class="text-white font-bold text-lg" x-text="match.teamB.name"></span>
-                            </div>
-                        </div>
-                    </template>
-                    <template x-if="sortedSchedules.length === 0">
-                        <div class="text-center text-gray-400 py-8">No matches found.</div>
-                    </template>
-                </div>
+                <div class="schedule-list flex flex-col gap-4">
+                @php
+                    $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
+                @endphp
+                @forelse($schedules as $match)
+                    <div class="bg-white rounded-2xl shadow-lg p-4 flex items-center gap-4 border border-gray-200 hover:shadow-xl transition-shadow">
+                        @if($match->teamA && $match->teamA->photo)
+                            <img src="{{ asset('storage/' . $match->teamA->photo) }}" alt="logo" class="w-8 h-8 rounded-full object-cover border border-gray-300" />
+                        @else
+                            <span class="inline-block w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></span>
+                        @endif
+                        <span class="font-bold text-base">{{ $match->teamA->name ?? '-' }}</span>
+                        <span class="mx-2 font-bold text-gray-600">vs</span>
+                        @if($match->teamB && $match->teamB->photo)
+                            <img src="{{ asset('storage/' . $match->teamB->photo) }}" alt="logo" class="w-8 h-8 rounded-full object-cover border border-gray-300" />
+                        @else
+                            <span class="inline-block w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></span>
+                        @endif
+                        <span class="font-bold text-base">{{ $match->teamB->name ?? '-' }}</span>
+                        <span class="ml-4 font-semibold text-gray-700">Gender:</span>
+                        <span>{{ $match->gender }}</span>
+                        <span class="ml-4 font-semibold text-gray-700">Score:</span>
+                        <span class="font-bold">{{ $match->score_a ?? '-' }} : {{ $match->score_b ?? '-' }}</span>
+                        <span class="ml-4 font-semibold text-gray-700">Status:</span>
+                        @if($match->is_done)
+                            <span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Finalized</span>
+                        @else
+                            <span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">Ongoing</span>
+                        @endif
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
+                @endforelse
+            </div>
             </template>
         </div>
 
@@ -390,7 +464,50 @@
                 @endforelse
             </div>
         </div>
-        <!-- You can add the scoreboard section here if needed -->
+        <!-- Scoreboard Card View Section -->
+        <div x-show="tab === 'scoreboard'" class="schedule-section w-full max-w-full mx-auto px-2">
+            <div class="schedule-header">Live Scoreboard</div>
+            @php
+                $teams = \App\Models\Team::all();
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($teams as $team)
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-200 items-start">
+                        <div class="flex items-center gap-3 mb-4 w-full">
+                            @if($team->photo)
+                                <img src="{{ asset('storage/' . $team->photo) }}" alt="logo" class="w-10 h-10 rounded-full object-cover border border-gray-300 shadow" />
+                            @else
+                                <span class="inline-block w-10 h-10 rounded-full bg-gray-200 border border-gray-300"></span>
+                            @endif
+                            <span class="font-bold text-lg text-red-600">{{ $team->name }}</span>
+                        </div>
+                        <div class="flex flex-col gap-2 w-full mt-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-yellow-500 text-xl">🥇</span>
+                                <span class="font-bold text-gray-800">Gold:</span>
+                                <span class="font-extrabold text-yellow-500 ml-auto">{{ $team->scoreboards->sum('gold') }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-500 text-xl">🥈</span>
+                                <span class="font-bold text-gray-800">Silver:</span>
+                                <span class="font-extrabold text-gray-700 ml-auto">{{ $team->scoreboards->sum('silver') }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-orange-500 text-xl">🥉</span>
+                                <span class="font-bold text-gray-800">Bronze:</span>
+                                <span class="font-extrabold text-orange-500 ml-auto">{{ $team->scoreboards->sum('bronze') }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 border-t pt-2 mt-2">
+                                <span class="font-bold text-black">Total:</span>
+                                <span class="font-extrabold text-black ml-auto">{{ $team->scoreboards->sum(function($s){ return $s->gold + $s->silver + $s->bronze; }) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500">No teams found.</div>
+                @endforelse
+            </div>
+        </div>
     </div>
 <script>
 function scheduleComponent() {
