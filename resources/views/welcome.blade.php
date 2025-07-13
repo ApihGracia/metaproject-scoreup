@@ -264,66 +264,195 @@
         </div>
     </div>
 
-    <div class="nav-tabs">
-        <a href="{{ route('user-rule') }}" class="nav-tab">Rules</a>
-        <a href="#" class="nav-tab">Live Scoreboard</a>
-        <a href="#" class="nav-tab active">Schedule</a>
-    </div>
+    <div x-data="Object.assign({ tab: 'schedule' }, scheduleComponent())">
+        <div class="nav-tabs">
+            <button @click="tab = 'rules'" :class="tab === 'rules' ? 'nav-tab active' : 'nav-tab'">Rules</button>
+            <button @click="tab = 'scoreboard'" :class="tab === 'scoreboard' ? 'nav-tab active' : 'nav-tab'">Live Scoreboard</button>
+            <button @click="tab = 'schedule'" :class="tab === 'schedule' ? 'nav-tab active' : 'nav-tab'">Schedule</button>
+        </div>
 
-    <div class="schedule-section">
-        <div class="schedule-header">Match Schedule</div>
-        <div class="schedule-filters">
-            <select id="sport-filter">
-                <option value="">All Sports</option>
-                <option value="Badminton">Badminton</option>
-                <option value="Futsal">Futsal</option>
-                <option value="Netball">Netball</option>
-                <option value="Volleyball">Volleyball</option>
-            </select>
-            <select id="gender-filter">
-                <option value="">All Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Mixed">Mixed</option>
-            </select>
+        <div x-show="tab === 'schedule'" class="schedule-section w-full max-w-full mx-auto px-2">
+            <div class="schedule-header">Match Schedule</div>
+            <div class="flex items-center justify-between mb-4">
+                <div class="view-toggle-row flex gap-2">
+                    <button @click="viewType = 'grid'" :class="viewType === 'grid' ? 'view-toggle-btn active' : 'view-toggle-btn'">Grid View</button>
+                    <button @click="viewType = 'list'" :class="viewType === 'list' ? 'view-toggle-btn active' : 'view-toggle-btn'">List View</button>
+                </div>
+                <button @click="showFilter = true" class="bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2 shadow-lg font-bold text-lg hover:bg-red-700 transition">
+                    <span>Filter</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-5.414 5.414A1 1 0 0015 13v5a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5a1 1 0 00-.293-.707L3.293 6.707A1 1 0 013 6V4z" /></svg>
+                </button>
+            </div>
+            <!-- Filter Modal -->
+            <div x-show="showFilter" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md flex flex-col gap-6">
+                    <div>
+                        <div class="font-bold mb-2 text-lg">Sport</div>
+                        <div class="flex flex-wrap gap-2">
+                            <button @click="filterSport = ''" :class="filterSport === '' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">All</button>
+                            <template x-for="sport in sports" :key="sport.id">
+                                <button @click="filterSport = sport.id" :class="filterSport === sport.id ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'" x-text="sport.sport_name"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-bold mb-2 text-lg">Gender</div>
+                        <div class="flex gap-2">
+                            <button @click="filterGender = ''" :class="filterGender === '' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">All</button>
+                            <button @click="filterGender = 'Male'" :class="filterGender === 'Male' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Male</button>
+                            <button @click="filterGender = 'Female'" :class="filterGender === 'Female' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Female</button>
+                            <button @click="filterGender = 'Mixed'" :class="filterGender === 'Mixed' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Mixed</button>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 justify-end mt-8">
+                        <button @click="showFilter = false" class="bg-gray-400 text-white px-6 py-2 rounded-lg font-bold text-base">Cancel</button>
+                        <button @click="showFilter = false" class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold text-base">Apply</button>
+                    </div>
+                </div>
+            </div>
+            <template x-if="viewType === 'grid'">
+                <div class="schedule-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="match in filteredSchedules" :key="match.id">
+                        <div class="match-card">
+                            <div class="match-type" x-text="match.sport.sport_name"></div>
+                            <div class="match-info" x-text="match.match_date + ' • ' + match.match_time"></div>
+                            <div class="match-teams">
+                                <span x-text="match.teamA.name"></span>
+                                <span class="match-score" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                                <span x-text="match.teamB.name"></span>
+                            </div>
+                            <div class="match-status" x-text="match.is_done ? 'Finalized' : 'Ongoing'"></div>
+                        </div>
+                    </template>
+                    <template x-if="filteredSchedules.length === 0">
+                        <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
+                    </template>
+                </div>
+            </template>
+            <template x-if="viewType === 'list'">
+                <div class="flex flex-col gap-6">
+                    <template x-for="match in sortedSchedules" :key="match.id">
+                        <div class="bg-gray-900 rounded-2xl shadow-lg p-6 flex items-center justify-between border border-gray-700 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center gap-4 w-1/3">
+                                <img :src="match.teamA.photo ? match.teamA.photo : '/scoreup-logo.svg'" class="h-12 w-12 rounded-full object-cover" alt="Logo">
+                                <span class="text-white font-bold text-lg" x-text="match.teamA.name"></span>
+                            </div>
+                            <div class="flex flex-col items-center w-1/3">
+                                <span class="text-yellow-400 font-bold text-xl" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                                <span class="text-gray-300 text-sm" x-text="match.match_date + ' • ' + match.match_time"></span>
+                            </div>
+                            <div class="flex items-center gap-4 w-1/3 justify-end">
+                                <img :src="match.teamB.photo ? match.teamB.photo : '/scoreup-logo.svg'" class="h-12 w-12 rounded-full object-cover" alt="Logo">
+                                <span class="text-white font-bold text-lg" x-text="match.teamB.name"></span>
+                            </div>
+                        </div>
+                    </template>
+                    <template x-if="sortedSchedules.length === 0">
+                        <div class="text-center text-gray-400 py-8">No matches found.</div>
+                    </template>
+                </div>
+            </template>
         </div>
-        <div class="view-toggle-row">
-            <button class="view-toggle-btn active">Grid View</button>
-            <button class="view-toggle-btn">List View</button>
+
+        <div x-show="tab === 'rules'" class="schedule-section w-full max-w-full mx-auto px-2">
+            <div class="schedule-header">Sport Rules</div>
+            @php
+                $rules = \App\Models\Rules::with('sport')->orderBy('created_at', 'desc')->get();
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @forelse($rules as $rule)
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col h-full border border-gray-200">
+                        <div class="flex flex-col gap-2 mb-4">
+                            <div class="font-bold text-lg text-red-600">{{ $rule->title }}</div>
+                            <div class="text-sm text-gray-500">Sport: {{ $rule->sport->sport_name ?? '-' }}</div>
+                            <div class="text-gray-700 text-sm">{{ $rule->description }}</div>
+                        </div>
+                        @if($rule->file_path)
+                            <div class="mb-4 flex justify-center">
+                                <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-40 h-56 rounded shadow border" frameborder="0"></iframe>
+                            </div>
+                        @else
+                            <div class="mb-4 flex justify-center">
+                                <span class="text-gray-400">No PDF</span>
+                            </div>
+                        @endif
+                        <div class="flex gap-2 mt-auto">
+                            @if($rule->file_path)
+                                <a href="{{ asset('storage/'.$rule->file_path) }}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Preview</a>
+                                <a href="{{ asset('storage/'.$rule->file_path) }}" download class="bg-green-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Download</a>
+                            @else
+                                <span class="text-gray-400">No PDF</span>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500">No rules found.</div>
+                @endforelse
+            </div>
         </div>
-        <div class="schedule-grid">
-            <!-- Example match cards, replace with dynamic data -->
-            <div class="match-card">
-                <div class="match-type">Badminton</div>
-                <div class="match-info">Tue, July 1 &bull; 09:00</div>
-                <div class="match-teams">
-                    <span>KAHS</span>
-                    <span class="match-score">21 : 18</span>
-                    <span>KZ</span>
+        <!-- You can add the scoreboard section here if needed -->
+    </div>
+<script>
+function scheduleComponent() {
+    return {
+        viewType: 'grid',
+        showFilter: false,
+        filterSport: '',
+        filterGender: '',
+        sports: @json(\App\Models\Sport::all()),
+        schedules: @json(\App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->get()),
+        get filteredSchedules() {
+            return this.schedules.filter(match => {
+                const sportMatch = !this.filterSport || match.sport_id == this.filterSport;
+                const genderMatch = !this.filterGender || match.gender == this.filterGender;
+                return sportMatch && genderMatch;
+            });
+        },
+        get sortedSchedules() {
+            return [...this.filteredSchedules].sort((a, b) => {
+                const ad = new Date(a.match_date + ' ' + a.match_time);
+                const bd = new Date(b.match_date + ' ' + b.match_time);
+                return ad - bd;
+            });
+        }
+    }
+}
+</script>
+
+    <div x-show="tab === 'rules'" class="schedule-section w-full max-w-full mx-auto px-2">
+        <div class="schedule-header">Sport Rules</div>
+        @php
+            $rules = \App\Models\Rules::with('sport')->orderBy('created_at', 'desc')->get();
+        @endphp
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @forelse($rules as $rule)
+                <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col h-full border border-gray-200">
+                    <div class="flex flex-col gap-2 mb-4">
+                        <div class="font-bold text-lg text-red-600">{{ $rule->title }}</div>
+                        <div class="text-sm text-gray-500">Sport: {{ $rule->sport->sport_name ?? '-' }}</div>
+                        <div class="text-gray-700 text-sm">{{ $rule->description }}</div>
+                    </div>
+                    @if($rule->file_path)
+                        <div class="mb-4 flex justify-center">
+                            <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-40 h-56 rounded shadow border" frameborder="0"></iframe>
+                        </div>
+                    @else
+                        <div class="mb-4 flex justify-center">
+                            <span class="text-gray-400">No PDF</span>
+                        </div>
+                    @endif
+                    <div class="flex gap-2 mt-auto">
+                        @if($rule->file_path)
+                            <a href="{{ asset('storage/'.$rule->file_path) }}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Preview</a>
+                            <a href="{{ asset('storage/'.$rule->file_path) }}" download class="bg-green-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Download</a>
+                        @else
+                            <span class="text-gray-400">No PDF</span>
+                        @endif
+                    </div>
                 </div>
-                <div class="match-status">Finalized</div>
-            </div>
-            <div class="match-card">
-                <div class="match-type">Futsal</div>
-                <div class="match-info">Tue, July 1 &bull; 10:00</div>
-                <div class="match-teams">
-                    <span>KAB</span>
-                    <span class="match-score">3 : 2</span>
-                    <span>KHAR</span>
-                </div>
-                <div class="match-status">Ongoing</div>
-            </div>
-            <div class="match-card">
-                <div class="match-type">Netball</div>
-                <div class="match-info">Tue, July 1 &bull; 11:00</div>
-                <div class="match-teams">
-                    <span>KUO</span>
-                    <span class="match-score">15 : 15</span>
-                    <span>UKLK</span>
-                </div>
-                <div class="match-status">Ongoing</div>
-            </div>
-            <!-- Add more cards dynamically as needed -->
+            @empty
+                <div class="col-span-full text-center text-gray-500">No rules found.</div>
+            @endforelse
         </div>
     </div>
 </body>
