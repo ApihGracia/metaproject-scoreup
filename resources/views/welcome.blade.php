@@ -233,10 +233,10 @@
     </style>
 </head>
 <body x-data="{ slider: 0, images: [
-    '/storage/backgrounds/POSTER_BADMINTON.jpg',
-    '/storage/backgrounds/POSTER_BOLASEPAK.jpg',
-    '/storage/backgrounds/POSTER_FRISBEE.jpg',
-    '/storage/backgrounds/POSTER_NETBALL.jpg'
+    '/storage/app/public/backgrounds/POSTER_BADMINTON.jpg',
+    '/storage/app/public/backgrounds/POSTER_BOLASEPAK.jpg',
+    '/storage/app/public/backgrounds/POSTER_FRISBEE.jpg',
+    '/storage/app/public/backgrounds/POSTER_NETBALL.jpg'
 ], timer: null }" x-init="timer = setInterval(() => { slider = (slider + 1) % images.length }, 2000)">
     <div class="nav">
         <img src="/scoreup-logo.svg" alt="ScoreUp Logo" style="height:60px; margin-right:1rem; border-radius:12px; box-shadow:0 2px 8px rgba(220,38,38,0.10); background:#fff;">
