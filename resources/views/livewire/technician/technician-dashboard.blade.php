@@ -8,6 +8,23 @@
     @endif --}}
 
     <h2 class="text-xl font-bold mb-2">Overview of Total Medals per Team</h2>
+    @php
+        if (!isset($overview)) {
+            $overview = \App\Models\Team::all()->map(function($team) {
+                $gold = $team->scoreboards->sum('gold');
+                $silver = $team->scoreboards->sum('silver');
+                $bronze = $team->scoreboards->sum('bronze');
+                $total = $gold + $silver + $bronze;
+                return [
+                    'team' => $team,
+                    'gold' => $gold,
+                    'silver' => $silver,
+                    'bronze' => $bronze,
+                    'total' => $total
+                ];
+            });
+        }
+    @endphp
     <div class="overflow-x-auto">
     {{-- <table class="min-w-full border-separate border-spacing-y-2 shadow-xl rounded-2xl"> --}}
     <table class="w-full table-auto border border-gray-300">

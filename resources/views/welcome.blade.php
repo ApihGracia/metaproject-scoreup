@@ -222,6 +222,50 @@
             grid-template-columns: 1fr;
             gap: 2rem;
         }
+        .rule-card {
+            background: #fff;
+            border-radius: 2.2rem;
+            box-shadow: 0 4px 32px rgba(220,38,38,0.12);
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            border: 2px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 300px;
+            max-width: 520px;
+            margin: auto;
+            transition: box-shadow 0.2s, border 0.2s;
+        }
+        .rule-card:hover {
+            box-shadow: 0 8px 40px rgba(220,38,38,0.18);
+            border-color: #F97316;
+        }
+        .rule-card .rule-sport {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #DC2626;
+            margin-bottom: 0.7rem;
+            text-align: center;
+        }
+        .rule-card .rule-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .rule-card .rule-desc {
+            color: #374151;
+            font-size: 1.08rem;
+            margin-bottom: 1.1rem;
+            text-align: center;
+        }
+        .rule-card .rule-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: center;
+        }
         @media (max-width: 1100px) {
             .main-card-row, .schedule-section { max-width: 100%; }
             .schedule-grid { grid-template-columns: repeat(2, 1fr); }
@@ -234,6 +278,91 @@
             .nav { flex-direction: column; gap: 1rem; padding: 1rem; }
             .main-card { min-width: 90vw; max-width: 98vw; }
             .schedule-section { padding: 1rem; }
+        }
+
+        /* Live Scoreboard Table Styles */
+        .scoreboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px rgba(220,38,38,0.10);
+            overflow: hidden;
+        }
+        .scoreboard-table thead tr {
+            background: linear-gradient(90deg, #fde68a 0%, #fb923c 50%, #ef4444 100%);
+        }
+        .scoreboard-table th, .scoreboard-table td {
+            padding: 1rem 1.2rem;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        .scoreboard-table th {
+            font-weight: 900;
+            color: #1F2937;
+            text-align: center;
+        }
+        .scoreboard-table td {
+            font-weight: 700;
+            color: #374151;
+            text-align: center;
+            background: #fff;
+        }
+        .scoreboard-table td.team-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: #fff;
+            border-radius: 1.2rem 0 0 1.2rem;
+            font-weight: 900;
+            color: #DC2626;
+            text-align: left;
+        }
+        .team-logo {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e5e7eb;
+            box-shadow: 0 4px 16px rgba(220,38,38,0.13);
+            background: #fff;
+            display: inline-block;
+            margin-right: 0.7rem;
+        }
+        .scoreboard-table td.gold {
+            color: #eab308;
+            background: #fef9c3;
+            font-size: 1.2rem;
+        }
+        .scoreboard-table td.silver {
+            color: #6b7280;
+            background: #f3f4f6;
+            font-size: 1.2rem;
+        }
+        .scoreboard-table td.bronze {
+            color: #ea580c;
+            background: #ffedd5;
+            font-size: 1.2rem;
+        }
+        .scoreboard-table td.total {
+            color: #1F2937;
+            background: #fff7ed;
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+        .scoreboard-table tr:last-child td {
+            border-bottom: none;
+        }
+        .scoreboard-table tr:hover td {
+            background: #fef3c7;
+            transition: background 0.2s;
+        }
+        @media (max-width: 700px) {
+            .scoreboard-table th, .scoreboard-table td {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.98rem;
+            }
         }
     </style>
 </head>
@@ -373,15 +502,24 @@
                         $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
                     @endphp
                     <template x-for="match in filteredSchedules" :key="match.id">
-                        <div class="match-card">
-                            <div class="match-type" x-text="match.sport.sport_name"></div>
-                            <div class="match-info" x-text="match.match_date + ' • ' + match.match_time"></div>
-                            <div class="match-teams">
-                                <span x-text="match.teamA.name"></span>
-                                <span class="match-score" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
-                                <span x-text="match.teamB.name"></span>
+                        <div class="match-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:300px;">
+                            <div class="absolute top-3 left-3 w-3 h-3 rounded-full bg-blue-100"></div>
+                            <div class="absolute top-3 right-3 w-3 h-3 rounded-full bg-purple-100"></div>
+                            <div class="font-bold text-lg text-gray-900 flex items-center gap-2">
+                                <span x-text="match.sport.sport_name"></span>
+                                <span class="text-gray-500 text-base font-semibold" x-text="'(' + match.gender + ')'" style="font-weight:500;"></span>
                             </div>
-                            <div class="match-status" x-text="match.is_done ? 'Finalized' : 'Ongoing'"></div>
+                            <div class="text-gray-700 text-base mb-2" x-text="match.match_date + ' • ' + match.match_time"></div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="font-bold text-lg text-gray-900" x-text="match.teamA.name"></span>
+                                <span class="bg-gray-100 px-3 py-1 rounded-lg font-bold text-lg text-gray-700" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                                <span class="font-bold text-lg text-gray-900" x-text="match.teamB.name"></span>
+                            </div>
+                            <div class="text-gray-600 text-sm mb-2" x-text="'Venue: ' + (match.venue ?? '-')"></div>
+                            <div>
+                                <span x-show="match.is_done" class="px-3 py-1 rounded bg-green-100 text-green-700 text-sm font-semibold">Finalized</span>
+                                <span x-show="!match.is_done" class="px-3 py-1 rounded bg-yellow-100 text-yellow-700 text-sm font-semibold">Ongoing</span>
+                            </div>
                         </div>
                     </template>
                     <template x-if="filteredSchedules.length === 0">
@@ -392,39 +530,31 @@
 
             <template x-if="viewType === 'list'">
                 <div class="schedule-list flex flex-col gap-4">
-                @php
-                    $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
-                @endphp
-                @forelse($schedules as $match)
-                    <div class="bg-white rounded-2xl shadow-lg p-4 flex items-center gap-4 border border-gray-200 hover:shadow-xl transition-shadow">
-                        @if($match->teamA && $match->teamA->photo)
-                            <img src="{{ asset('storage/' . $match->teamA->photo) }}" alt="logo" class="w-8 h-8 rounded-full object-cover border border-gray-300" />
-                        @else
-                            <span class="inline-block w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></span>
-                        @endif
-                        <span class="font-bold text-base">{{ $match->teamA->name ?? '-' }}</span>
-                        <span class="mx-2 font-bold text-gray-600">vs</span>
-                        @if($match->teamB && $match->teamB->photo)
-                            <img src="{{ asset('storage/' . $match->teamB->photo) }}" alt="logo" class="w-8 h-8 rounded-full object-cover border border-gray-300" />
-                        @else
-                            <span class="inline-block w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></span>
-                        @endif
-                        <span class="font-bold text-base">{{ $match->teamB->name ?? '-' }}</span>
-                        <span class="ml-4 font-semibold text-gray-700">Gender:</span>
-                        <span>{{ $match->gender }}</span>
-                        <span class="ml-4 font-semibold text-gray-700">Score:</span>
-                        <span class="font-bold">{{ $match->score_a ?? '-' }} : {{ $match->score_b ?? '-' }}</span>
-                        <span class="ml-4 font-semibold text-gray-700">Status:</span>
-                        @if($match->is_done)
-                            <span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Finalized</span>
-                        @else
-                            <span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">Ongoing</span>
-                        @endif
-                    </div>
-                @empty
-                    <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
-                @endforelse
-            </div>
+                    <template x-for="match in sortedSchedules" :key="match.id">
+                        <div class="match-card flex flex-col gap-2">
+                            <div class="flex items-center gap-3 mb-1">
+                                <img :src="match.teamA.photo ? match.teamA.photo : '/scoreup-logo.svg'" class="w-10 h-10 rounded-full object-cover border border-gray-300" alt="A" />
+                                <span class="font-bold text-base" x-text="match.teamA.name"></span>
+                                <span class="mx-2 font-bold text-gray-600">vs</span>
+                                <img :src="match.teamB.photo ? match.teamB.photo : '/scoreup-logo.svg'" class="w-10 h-10 rounded-full object-cover border border-gray-300" alt="B" />
+                                <span class="font-bold text-base" x-text="match.teamB.name"></span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="font-semibold text-gray-700">Gender:</span>
+                                <span x-text="match.gender"></span>
+                                <span class="ml-4 font-semibold text-gray-700">Score:</span>
+                                <span class="match-score font-bold" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="font-semibold text-gray-700">Status:</span>
+                                <span x-text="match.is_done ? 'Finalized' : 'Ongoing'" :class="match.is_done ? 'px-2 py-1 rounded bg-green-100 text-green-700 text-xs' : 'px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs'"></span>
+                            </div>
+                        </div>
+                    </template>
+                    <template x-if="sortedSchedules.length === 0">
+                        <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
+                    </template>
+                </div>
             </template>
         </div>
 
@@ -433,17 +563,17 @@
             @php
                 $rules = \App\Models\Rules::with('sport')->orderBy('created_at', 'desc')->get();
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 @forelse($rules as $rule)
-                    <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col h-full border border-gray-200">
+                    <div class="rule-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:320px;">
                         <div class="flex flex-col gap-2 mb-4">
-                            <div class="font-bold text-lg text-red-600">{{ $rule->title }}</div>
-                            <div class="text-sm text-gray-500">Sport: {{ $rule->sport->sport_name ?? '-' }}</div>
-                            <div class="text-gray-700 text-sm">{{ $rule->description }}</div>
+                            <div class="font-bold text-xl text-red-600 mb-1">{{ $rule->sport->sport_name ?? '-' }}</div>
+                            <div class="font-semibold text-lg text-gray-900 mb-1">{{ $rule->title }}</div>
+                            <div class="text-gray-700 text-base mb-2">{{ $rule->description }}</div>
                         </div>
                         @if($rule->file_path)
                             <div class="mb-4 flex justify-center">
-                                <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-40 h-56 rounded shadow border" frameborder="0"></iframe>
+                                <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-44 h-60 rounded shadow border" frameborder="0"></iframe>
                             </div>
                         @else
                             <div class="mb-4 flex justify-center">
@@ -468,44 +598,52 @@
         <div x-show="tab === 'scoreboard'" class="schedule-section w-full max-w-full mx-auto px-2">
             <div class="schedule-header">Live Scoreboard</div>
             @php
-                $teams = \App\Models\Team::all();
+                $overview = \App\Models\Team::all()->map(function($team) {
+                    $gold = $team->scoreboards->sum('gold');
+                    $silver = $team->scoreboards->sum('silver');
+                    $bronze = $team->scoreboards->sum('bronze');
+                    $total = $gold + $silver + $bronze;
+                    return [
+                        'team' => $team,
+                        'gold' => $gold,
+                        'silver' => $silver,
+                        'bronze' => $bronze,
+                        'total' => $total
+                    ];
+                });
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @forelse($teams as $team)
-                    <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-200 items-start">
-                        <div class="flex items-center gap-3 mb-4 w-full">
-                            @if($team->photo)
-                                <img src="{{ asset('storage/' . $team->photo) }}" alt="logo" class="w-10 h-10 rounded-full object-cover border border-gray-300 shadow" />
-                            @else
-                                <span class="inline-block w-10 h-10 rounded-full bg-gray-200 border border-gray-300"></span>
-                            @endif
-                            <span class="font-bold text-lg text-red-600">{{ $team->name }}</span>
-                        </div>
-                        <div class="flex flex-col gap-2 w-full mt-2">
-                            <div class="flex items-center gap-2">
-                                <span class="text-yellow-500 text-xl">🥇</span>
-                                <span class="font-bold text-gray-800">Gold:</span>
-                                <span class="font-extrabold text-yellow-500 ml-auto">{{ $team->scoreboards->sum('gold') }}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-500 text-xl">🥈</span>
-                                <span class="font-bold text-gray-800">Silver:</span>
-                                <span class="font-extrabold text-gray-700 ml-auto">{{ $team->scoreboards->sum('silver') }}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-orange-500 text-xl">🥉</span>
-                                <span class="font-bold text-gray-800">Bronze:</span>
-                                <span class="font-extrabold text-orange-500 ml-auto">{{ $team->scoreboards->sum('bronze') }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 border-t pt-2 mt-2">
-                                <span class="font-bold text-black">Total:</span>
-                                <span class="font-extrabold text-black ml-auto">{{ $team->scoreboards->sum(function($s){ return $s->gold + $s->silver + $s->bronze; }) }}</span>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-span-full text-center text-gray-500">No teams found.</div>
-                @endforelse
+            <div class="overflow-x-auto">
+                <table class="scoreboard-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>🥇 Gold</th>
+                            <th>🥈 Silver</th>
+                            <th>🥉 Bronze</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($overview as $row)
+                            <tr>
+                                <td class="team-cell">
+                                    @if($row['team']->photo)
+                                    <img src="{{ asset('storage/' . $row['team']->photo) }}" alt="logo" class="team-logo" />
+                                    @else
+                                        <span class="inline-block team-logo bg-gray-200 border-gray-300"></span>
+                                    @endif
+                                    <span>{{ $row['team']->name }}</span>
+                                </td>
+                                <td class="gold">{{ $row['gold'] }}</td>
+                                <td class="silver">{{ $row['silver'] }}</td>
+                                <td class="bronze">{{ $row['bronze'] }}</td>
+                                <td class="total">{{ $row['total'] }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="5" class="text-center text-gray-500 py-8">No teams found.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -541,24 +679,22 @@ function scheduleComponent() {
         @php
             $rules = \App\Models\Rules::with('sport')->orderBy('created_at', 'desc')->get();
         @endphp
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             @forelse($rules as $rule)
-                <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col h-full border border-gray-200">
-                    <div class="flex flex-col gap-2 mb-4">
-                        <div class="font-bold text-lg text-red-600">{{ $rule->title }}</div>
-                        <div class="text-sm text-gray-500">Sport: {{ $rule->sport->sport_name ?? '-' }}</div>
-                        <div class="text-gray-700 text-sm">{{ $rule->description }}</div>
-                    </div>
+                <div class="rule-card">
+                    <div class="rule-sport">{{ $rule->sport->sport_name ?? '-' }}</div>
+                    <div class="rule-title">{{ $rule->title }}</div>
+                    <div class="rule-desc">{{ $rule->description }}</div>
                     @if($rule->file_path)
                         <div class="mb-4 flex justify-center">
-                            <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-40 h-56 rounded shadow border" frameborder="0"></iframe>
+                            <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-44 h-60 rounded shadow border" frameborder="0"></iframe>
                         </div>
                     @else
                         <div class="mb-4 flex justify-center">
                             <span class="text-gray-400">No PDF</span>
                         </div>
                     @endif
-                    <div class="flex gap-2 mt-auto">
+                    <div class="rule-actions">
                         @if($rule->file_path)
                             <a href="{{ asset('storage/'.$rule->file_path) }}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Preview</a>
                             <a href="{{ asset('storage/'.$rule->file_path) }}" download class="bg-green-600 text-white px-4 py-2 rounded font-bold flex-1 text-center">Download</a>
