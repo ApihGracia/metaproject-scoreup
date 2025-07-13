@@ -11,6 +11,12 @@ class AdminDashboard extends Component
     public $scoreboards = [];
     public $medals = [];
     public $overview = [];
+    public $teams = [];
+    public $showModal = false;
+    public $modalTeamId;
+    public $modalGold;
+    public $modalSilver;
+    public $modalBronze;
 
     // public function mount()
     // {
@@ -43,11 +49,11 @@ class AdminDashboard extends Component
 
     public function mount()
     {
-        $teams = Team::all();
+        $this->teams = Team::all();
         $sports = \App\Models\Sport::all();
 
         // Overview: total medals per team
-        $this->overview = $teams->map(function($team) {
+        $this->overview = collect($this->teams)->map(function($team) {
             return [
                 'team' => $team,
                 'gold' => $team->scoreboards->sum('gold'),
@@ -61,7 +67,7 @@ class AdminDashboard extends Component
 
         // Build all combinations for detailed scoreboard
         $scoreboards = [];
-        foreach ($teams as $team) {
+        foreach ($this->teams as $team) {
             foreach ($sports as $sport) {
                 // Try to find an existing scoreboard
                 $scoreboard = \App\Models\Scoreboard::where('team_id', $team->id)
@@ -79,6 +85,53 @@ class AdminDashboard extends Component
             }
         }
         $this->scoreboards = $scoreboards;
+    }
+
+    public function editScoreboard($teamId)
+    {
+        $team = Team::findOrFail($teamId);
+        $this->modalTeamId = $team->id;
+        $this->modalGold = $team->scoreboards->sum('gold');
+        $this->modalSilver = $team->scoreboards->sum('silver');
+        $this->modalBronze = $team->scoreboards->sum('bronze');
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->modalTeamId = null;
+        $this->modalGold = null;
+        $this->modalSilver = null;
+        $this->modalBronze = null;
+    }
+
+    public function saveUpdate()
+    {
+        $teamId = $this->modalTeamId;
+        $team = Team::findOrFail($teamId);
+        // Update all scoreboards for this team
+        foreach ($team->scoreboards as $scoreboard) {
+            $scoreboard->update([
+                'gold' => $this->modalGold,
+                'silver' => $this->modalSilver,
+                'bronze' => $this->modalBronze,
+            ]);
+        }
+        // If no scoreboard exists, create one (assign to first sport or null)
+        if ($team->scoreboards->count() == 0) {
+            $firstSport = \App\Models\Sport::first();
+            Scoreboard::create([
+                'team_id' => $teamId,
+                'sport_id' => $firstSport ? $firstSport->id : null,
+                'gold' => $this->modalGold,
+                'silver' => $this->modalSilver,
+                'bronze' => $this->modalBronze,
+            ]);
+        }
+        $this->showModal = false;
+        $this->mount();
+        session()->flash('success', 'Scoreboard updated!');
     }
 
     public function updatedMedals()
@@ -114,6 +167,8 @@ class AdminDashboard extends Component
 
     public function render()
     {
-        return view('livewire.admin.admin-dashboard');
+        return view('livewire.admin.admin-dashboard', [
+            'teams' => $this->teams,
+        ]);
     }
 }
