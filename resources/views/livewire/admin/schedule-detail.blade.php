@@ -18,9 +18,9 @@
             <flux:button wire:click="goBack" variant="primary" color="emerald">Match Game Begin Here</flux:button>
         </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
         @forelse($this->filteredSchedules as $match)
-            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between border border-gray-200 hover:shadow-xl transition-shadow">
+            <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between border border-gray-200 hover:shadow-xl transition-shadow bg-gradient-to-r from-blue-100 to-purple-100">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">{{ $match->round }}</span>

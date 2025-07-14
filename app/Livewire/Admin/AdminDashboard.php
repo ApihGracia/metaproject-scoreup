@@ -63,7 +63,19 @@ class AdminDashboard extends Component
                     return $s->gold + $s->silver + $s->bronze;
                 }),
             ];
-        });
+        })->sort(function($a, $b) {
+            // Sort by gold DESC, then silver DESC, then bronze DESC, then total DESC
+            if ($a['gold'] !== $b['gold']) {
+                return $b['gold'] <=> $a['gold'];
+            }
+            if ($a['silver'] !== $b['silver']) {
+                return $b['silver'] <=> $a['silver'];
+            }
+            if ($a['bronze'] !== $b['bronze']) {
+                return $b['bronze'] <=> $a['bronze'];
+            }
+            return $b['total'] <=> $a['total'];
+        })->values();
 
         // Build all combinations for detailed scoreboard
         $scoreboards = [];

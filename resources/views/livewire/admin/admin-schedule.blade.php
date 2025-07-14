@@ -2,7 +2,7 @@
     @include('livewire.admin.schedule-detail')
 @else
 
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-20 max-w-6xl mx-auto">
     <h1 class="text-2xl font-bold mb-4">Manage Match Schedules</h1>
 
     <flux:button wire:click="$set('showModal', true)">
@@ -84,7 +84,7 @@
 
     <table class="w-full table-auto border-collapse rounded-2xl overflow-hidden shadow-lg border border-gray-300 mt-6">
         <thead>
-            <tr class="bg-gradient-to-r from-blue-100 to-purple-100">
+            <tr class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 text-black text-lg">
                 <th class="border px-4 py-2">Date</th>
                 <th class="border px-4 py-2">Time</th>
                 <th class="border px-4 py-2">Sport</th>
@@ -99,7 +99,7 @@
         </thead>
         <tbody>
             @forelse($schedules as $match)
-                <tr>
+                <tr class="bg-gradient-to-r from-blue-100 to-purple-100">
                     <td class="border px-4 py-2">{{ $match->match_date }}</td>
                     <td class="border px-4 py-2">{{ $match->match_time }}</td>
                     <td class="border px-4 py-2">{{ $match->sport->sport_name }}</td>

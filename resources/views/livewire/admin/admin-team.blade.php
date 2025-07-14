@@ -1,5 +1,5 @@
 {{-- filepath: resources/views/livewire/admin/admin-team.blade.php --}}
-<div class="p-6 max-w-2xl mx-auto">
+<div class="p-20 max-w-6xl mx-auto">
     <h1 class="text-2xl font-bold mb-4">Manage Teams</h1>
 
     {{-- <form wire:submit.prevent="save" class="mb-6 space-y-4">
@@ -56,9 +56,9 @@
     </form>
 
     <h2 class="text-xl font-semibold mb-2">Existing Teams</h2>
-    <table class="w-full table-auto border-collapse border border-gray-300">
+    <table class="w-full table-auto border-collapse rounded-2xl overflow-hidden shadow-lg border border-gray-300 mt-6">
         <thead>
-            <tr class="bg-gray-200">
+            <tr class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 text-black text-lg">
                 <th class="border px-4 py-2">Team Logo</th>
                 <th class="border px-4 py-2">Team Name</th>
                 <th class="border px-4 py-2">Description</th>
@@ -67,10 +67,10 @@
         </thead>
         <tbody>
             @forelse($teams as $team)
-                <tr>
+                <tr class="bg-gradient-to-r from-blue-100 to-purple-100">
                     <td class="border px-4 py-2 text-center">
                         @if($team->photo)
-                            <img src="{{ asset('storage/'.$team->photo) }}" class="h-10">
+                            <img src="{{ asset('storage/'.$team->photo) }}" class="w-16 h-16 rounded-full object-cover" alt="Team Icon">
                         @endif
                     </td>
                     <td class="border px-4 py-2">{{ $team->name }}</td>
