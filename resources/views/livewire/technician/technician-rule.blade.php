@@ -1,4 +1,4 @@
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-20 max-w-6xl mx-auto">
     <h1 class="text-2xl font-bold mb-4">Manage Sport Rules (PDF)</h1>
 
     @if(session()->has('success'))
@@ -9,9 +9,9 @@
     @endif
 
     <h2 class="text-xl font-semibold mb-2">All Rules</h2>
-    <table class="w-full table-auto border-collapse border border-gray-300">
+    <table class="w-full table-auto border-collapse rounded-2xl overflow-hidden shadow-lg border border-gray-300 mt-6">
         <thead>
-            <tr class="bg-gray-200">
+            <tr class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 text-black text-lg">
                 <th class="border px-4 py-2">Sport</th>
                 <th class="border px-4 py-2">Title</th>
                 <th class="border px-4 py-2">Description</th>
@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             @forelse($rules as $rule)
-                <tr>
+                <tr class="bg-gradient-to-r from-blue-100 to-purple-100">
                     <td class="border px-4 py-2">{{ $rule->sport->sport_name ?? $rule->sport->name }}</td>
                     <td class="border px-4 py-2">{{ $rule->title }}</td>
                     <td class="border px-4 py-2">{{ $rule->description }}</td>

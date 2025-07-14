@@ -155,6 +155,89 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
+        .filter-btn {
+            background: linear-gradient(90deg, #dc2626 0%, #fb7185 100%);
+            color: #fff;
+            border-radius: 1.5rem;
+            padding: 0.7rem 2.2rem;
+            font-weight: 900;
+            font-size: 1.15rem;
+            border: none;
+            box-shadow: 0 2px 12px rgba(220,38,38,0.13);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        .filter-btn:hover {
+            background: linear-gradient(90deg, #fb7185 0%, #dc2626 100%);
+            box-shadow: 0 4px 24px rgba(220,38,38,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .filter-btn:active {
+            background: #dc2626;
+            box-shadow: 0 2px 8px rgba(220,38,38,0.10);
+            transform: scale(0.98);
+        }
+        .filter-btn svg {
+            height: 1.3em;
+            width: 1.3em;
+        }
+        .filter-modal {
+            background: #fff;
+            border-radius: 2rem;
+            box-shadow: 0 8px 40px rgba(220,38,38,0.18);
+            padding: 2.5rem 2.2rem 2rem 2.2rem;
+            max-width: 420px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: relative;
+        }
+        .filter-modal .modal-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #dc2626;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .filter-modal .modal-section {
+            margin-bottom: 1.2rem;
+        }
+        .filter-modal .modal-label {
+            font-weight: 700;
+            color: #22223b;
+            margin-bottom: 0.5rem;
+            font-size: 1.08rem;
+        }
+        .filter-modal .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        .filter-modal .modal-btn {
+            padding: 0.7rem 2rem;
+            border-radius: 1rem;
+            font-weight: 900;
+            font-size: 1.08rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .filter-modal .modal-btn.cancel {
+            background: #e5e7eb;
+            color: #52525b;
+        }
+        .filter-modal .modal-btn.apply {
+            background: linear-gradient(90deg, #dc2626 0%, #fb7185 100%);
+            color: #fff;
+        }
+        .filter-modal .modal-btn.apply:hover {
+            background: linear-gradient(90deg, #fb7185 0%, #dc2626 100%);
+        }
         .view-toggle-btn {
             background: #fff;
             color: #DC2626;
@@ -176,7 +259,7 @@
             gap: 2rem;
         }
         .match-card {
-            background: #fff;
+            background: linear-gradient(to right, #dbeafe, #e9d5ff); /* blue-100 to purple-100 */
             border-radius: 1.5rem;
             box-shadow: 0 2px 12px rgba(220,38,38,0.10);
             padding: 1.5rem 1.2rem 1.2rem 1.2rem;
@@ -184,6 +267,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.7rem;
+            font-family: Arial, sans-serif;
         }
         .match-card .match-type {
             font-size: 1.1rem;
@@ -230,9 +314,9 @@
             border: 2px solid #E5E7EB;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 300px;
-            max-width: 520px;
+            align-items: left;
+            min-height: 200px;
+            max-width: 200px;
             margin: auto;
             transition: box-shadow 0.2s, border 0.2s;
         }
@@ -304,6 +388,7 @@
             text-align: center;
         }
         .scoreboard-table td {
+            background: linear-gradient(to right, #dbeafe, #e9d5ff); /* blue-100 to purple-100 */
             font-weight: 700;
             color: #374151;
             text-align: center;
@@ -320,36 +405,67 @@
             text-align: left;
         }
         .team-logo {
-            width: 4rem;
-            height: 4rem;
+            width: 3rem;
+            height: 3rem;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #e5e7eb;
-            box-shadow: 0 4px 16px rgba(220,38,38,0.13);
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(220,38,38,0.10);
             background: #fff;
-            display: inline-block;
-            margin-right: 0.7rem;
+            display: block;
+            margin-right: 0.5rem;
+        }
+        .avatar-xl {
+            width: 3rem;
+            height: 3rem;
+        }
+        .avatar-2xl {
+            width: 3rem;
+            height: 3rem;
+        }
+        @media (min-width: 700px) {
+            .avatar-xl {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+            .avatar-2xl {
+                width: 4rem;
+                height: 4rem;
+            }
         }
         .scoreboard-table td.gold {
             color: #eab308;
-            background: #fef9c3;
-            font-size: 1.2rem;
-        }
-        .scoreboard-table td.silver {
-            color: #6b7280;
-            background: #f3f4f6;
-            font-size: 1.2rem;
-        }
-        .scoreboard-table td.bronze {
-            color: #ea580c;
-            background: #ffedd5;
-            font-size: 1.2rem;
-        }
-        .scoreboard-table td.total {
-            color: #1F2937;
-            background: #fff7ed;
+            background: #fff;
             font-size: 1.2rem;
             font-weight: 900;
+        }
+        .scoreboard-table td.silver {
+            color: #a1a1aa;
+            background: #fff;
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+        .scoreboard-table td.bronze {
+            color: #b45309;
+            background: #fff;
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+        .match-card .flex.items-center.gap-2,
+        .custom-match-card .flex.items-center.gap-2 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .match-card .flex.items-center.gap-3,
+        .custom-match-card .flex.items-center.gap-3 {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .match-card .font-bold.text-base,
+        .custom-match-card .font-bold.text-base {
+            margin-left: 0.2rem;
         }
         .scoreboard-table tr:last-child td {
             border-bottom: none;
@@ -357,6 +473,98 @@
         .scoreboard-table tr:hover td {
             background: #fef3c7;
             transition: background 0.2s;
+        }
+
+        .custom-match-card {
+            background: linear-gradient(to right, #dbeafe, #e9d5ff); /* blue-100 to purple-100 */
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px rgba(31,41,55,0.08);
+            border: 1.5px solid #e5e7eb;
+            padding: 2rem 2rem 1.5rem 2rem;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            transition: box-shadow 0.2s, border 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        .custom-match-card:hover {
+            box-shadow: 0 8px 32px rgba(31,41,55,0.13);
+            border-color: #a5b4fc;
+        }
+        .match-card .font-bold,
+        .custom-match-card .font-bold {
+            font-weight: 900 !important;
+            color: #22223b !important;
+            letter-spacing: 0.5px;
+        }
+        .match-card .text-lg,
+        .custom-match-card .text-lg {
+            font-size: 1.18rem !important;
+            font-weight: 900 !important;
+            color: #22223b !important;
+        }
+        .match-card .text-base,
+        .custom-match-card .text-base {
+            font-size: 1.08rem !important;
+            color: #22223b !important;
+        }
+        .match-card .text-gray-500,
+        .custom-match-card .text-gray-500 {
+            color: #a1a1aa !important;
+        }
+        .match-card .text-gray-700,
+        .custom-match-card .text-gray-700 {
+            color: #6b7280 !important;
+        }
+        .match-card .text-gray-600,
+        .custom-match-card .text-gray-600 {
+            color: #52525b !important;
+        }
+        .score-box {
+            background: #f3f4f6;
+            color: #22223b;
+            border-radius: 0.7rem;
+            padding: 0.4rem 1.2rem;
+            font-size: 1.18rem;
+            font-weight: 900;
+            min-width: 60px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(31,41,55,0.07);
+            border: 1.5px solid #e5e7eb;
+        }
+        .match-card .score-box {
+            background: #f3f4f6;
+            color: #22223b;
+            border-radius: 0.7rem;
+            padding: 0.4rem 1.2rem;
+            font-size: 1.18rem;
+            font-weight: 900;
+            min-width: 60px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(31,41,55,0.07);
+            border: 1.5px solid #e5e7eb;
+        }
+        .match-card .status-finalized,
+        .custom-match-card .status-finalized {
+            background: #d1fae5 !important;
+            color: #059669 !important;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            padding: 0.3rem 1.1rem;
+            display: inline-block;
+        }
+        .match-card .status-ongoing,
+        .custom-match-card .status-ongoing {
+            background: #fef9c3 !important;
+            color: #b45309 !important;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            padding: 0.3rem 1.1rem;
+            display: inline-block;
         }
         @media (max-width: 700px) {
             .scoreboard-table th, .scoreboard-table td {
@@ -419,35 +627,36 @@
                     <button @click="viewType = 'grid'" :class="viewType === 'grid' ? 'view-toggle-btn active' : 'view-toggle-btn'">Grid View</button>
                     <button @click="viewType = 'list'" :class="viewType === 'list' ? 'view-toggle-btn active' : 'view-toggle-btn'">List View</button>
                 </div>
-                <button @click="showFilter = true" class="bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2 shadow-lg font-bold text-lg hover:bg-red-700 transition">
+                <button @click="showFilter = true" class="filter-btn">
                     <span>Filter</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-5.414 5.414A1 1 0 0015 13v5a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5a1 1 0 00-.293-.707L3.293 6.707A1 1 0 013 6V4z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-5.414 5.414A1 1 0 0015 13v5a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5a1 1 0 00-.293-.707L3.293 6.707A1 1 0 013 6V4z" /></svg>
                 </button>
             </div>
             <!-- Filter Modal -->
             <div x-show="showFilter" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md flex flex-col gap-6">
-                    <div>
-                        <div class="font-bold mb-2 text-lg">Sport</div>
+                <div class="filter-modal">
+                    <div class="modal-title">Filter Schedule</div>
+                    <div class="modal-section">
+                        <div class="modal-label">Sport</div>
                         <div class="flex flex-wrap gap-2">
-                            <button @click="filterSport = ''" :class="filterSport === '' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">All</button>
+                            <button @click="filterSport = ''" :class="filterSport === '' ? 'modal-btn apply' : 'modal-btn cancel'">All</button>
                             <template x-for="sport in sports" :key="sport.id">
-                                <button @click="filterSport = sport.id" :class="filterSport === sport.id ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'" x-text="sport.sport_name"></button>
+                                <button @click="filterSport = sport.id" :class="filterSport === sport.id ? 'modal-btn apply' : 'modal-btn cancel'" x-text="sport.sport_name"></button>
                             </template>
                         </div>
                     </div>
-                    <div>
-                        <div class="font-bold mb-2 text-lg">Gender</div>
+                    <div class="modal-section">
+                        <div class="modal-label">Gender</div>
                         <div class="flex gap-2">
-                            <button @click="filterGender = ''" :class="filterGender === '' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">All</button>
-                            <button @click="filterGender = 'Male'" :class="filterGender === 'Male' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Male</button>
-                            <button @click="filterGender = 'Female'" :class="filterGender === 'Female' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Female</button>
-                            <button @click="filterGender = 'Mixed'" :class="filterGender === 'Mixed' ? 'px-4 py-2 rounded-lg font-bold text-base bg-red-600 text-white' : 'px-4 py-2 rounded-lg font-bold text-base bg-gray-400 text-white'">Mixed</button>
+                            <button @click="filterGender = ''" :class="filterGender === '' ? 'modal-btn apply' : 'modal-btn cancel'">All</button>
+                            <button @click="filterGender = 'Male'" :class="filterGender === 'Male' ? 'modal-btn apply' : 'modal-btn cancel'">Male</button>
+                            <button @click="filterGender = 'Female'" :class="filterGender === 'Female' ? 'modal-btn apply' : 'modal-btn cancel'">Female</button>
+                            <button @click="filterGender = 'Mixed'" :class="filterGender === 'Mixed' ? 'modal-btn apply' : 'modal-btn cancel'">Mixed</button>
                         </div>
                     </div>
-                    <div class="flex gap-4 justify-end mt-8">
-                        <button @click="showFilter = false" class="bg-gray-400 text-white px-6 py-2 rounded-lg font-bold text-base">Cancel</button>
-                        <button @click="showFilter = false" class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold text-base">Apply</button>
+                    <div class="modal-actions">
+                        <button @click="showFilter = false" class="modal-btn cancel">Cancel</button>
+                        <button @click="showFilter = false" class="modal-btn apply">Apply</button>
                     </div>
                 </div>
             </div>
@@ -502,23 +711,41 @@
                         $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
                     @endphp
                     <template x-for="match in filteredSchedules" :key="match.id">
-                        <div class="match-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:300px;">
+                        <div class="match-card custom-match-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:200px;">
                             <div class="absolute top-3 left-3 w-3 h-3 rounded-full bg-blue-100"></div>
                             <div class="absolute top-3 right-3 w-3 h-3 rounded-full bg-purple-100"></div>
-                            <div class="font-bold text-lg text-gray-900 flex items-center gap-2">
+                            <div class="font-bold text-lg flex items-center gap-2 mb-1">
                                 <span x-text="match.sport.sport_name"></span>
                                 <span class="text-gray-500 text-base font-semibold" x-text="'(' + match.gender + ')'" style="font-weight:500;"></span>
                             </div>
                             <div class="text-gray-700 text-base mb-2" x-text="match.match_date + ' • ' + match.match_time"></div>
-                            <div class="flex items-center justify-between gap-2 mb-2">
-                                <span class="font-bold text-lg text-gray-900" x-text="match.teamA.name"></span>
-                                <span class="bg-gray-100 px-3 py-1 rounded-lg font-bold text-lg text-gray-700" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
-                                <span class="font-bold text-lg text-gray-900" x-text="match.teamB.name"></span>
+                            <div class="flex items-center justify-between gap-4 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <template x-if="match.teamA && match.teamA.photo">
+                                        <img :src="'/storage/' + match.teamA.photo" alt="A" class="team-avatar" />
+                                    </template>
+                                    <template x-if="!match.teamA || !match.teamA.photo">
+                                        <span class="inline-block team-avatar bg-gray-200 border border-gray-300"></span>
+                                    </template>
+                                    <span class="font-bold text-base ml-1" x-text="match.teamA ? match.teamA.name : '-' "></span>
+                                </div>
+                                <div class="items-center">
+                                    <span class="score-box font-bold" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <template x-if="match.teamB && match.teamB.photo">
+                                        <img :src="'/storage/' + match.teamB.photo" alt="B" class="team-avatar" />
+                                    </template>
+                                    <template x-if="!match.teamB || !match.teamB.photo">
+                                        <span class="inline-block team-avatar bg-gray-200 border border-gray-300"></span>
+                                    </template>
+                                    <span class="font-bold text-base ml-1" x-text="match.teamB ? match.teamB.name : '-' "></span>
+                                </div>
                             </div>
                             <div class="text-gray-600 text-sm mb-2" x-text="'Venue: ' + (match.venue ?? '-')"></div>
                             <div>
-                                <span x-show="match.is_done" class="px-3 py-1 rounded bg-green-100 text-green-700 text-sm font-semibold">Finalized</span>
-                                <span x-show="!match.is_done" class="px-3 py-1 rounded bg-yellow-100 text-yellow-700 text-sm font-semibold">Ongoing</span>
+                                <span x-show="match.is_done" class="status-finalized">Finalized</span>
+                                <span x-show="!match.is_done" class="status-ongoing">Ongoing</span>
                             </div>
                         </div>
                     </template>
@@ -531,23 +758,40 @@
             <template x-if="viewType === 'list'">
                 <div class="schedule-list flex flex-col gap-4">
                     <template x-for="match in sortedSchedules" :key="match.id">
-                        <div class="match-card flex flex-col gap-2">
-                            <div class="flex items-center gap-3 mb-1">
-                                <img :src="match.teamA.photo ? match.teamA.photo : '/scoreup-logo.svg'" class="w-10 h-10 rounded-full object-cover border border-gray-300" alt="A" />
-                                <span class="font-bold text-base" x-text="match.teamA.name"></span>
-                                <span class="mx-2 font-bold text-gray-600">vs</span>
-                                <img :src="match.teamB.photo ? match.teamB.photo : '/scoreup-logo.svg'" class="w-10 h-10 rounded-full object-cover border border-gray-300" alt="B" />
-                                <span class="font-bold text-base" x-text="match.teamB.name"></span>
+                        <div class="match-card flex flex-col gap-3 p-5">
+                            <div class="flex items-center gap-4 mb-2">
+                                <span class="font-bold text-lg text-red-600" x-text="match.sport.sport_name"></span>
+                                <span class="text-gray-500 text-base font-semibold" x-text="'(' + match.gender + ')'" ></span>
                             </div>
-                            <div class="flex items-center gap-2 text-sm">
-                                <span class="font-semibold text-gray-700">Gender:</span>
-                                <span x-text="match.gender"></span>
-                                <span class="ml-4 font-semibold text-gray-700">Score:</span>
-                                <span class="match-score font-bold" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                            <div class="flex items-center gap-4 mb-2">
+                                <div class="flex items-center gap-2">
+                                    <template x-if="match.teamA && match.teamA.photo">
+                                        <img :src="'/storage/' + match.teamA.photo" alt="A" class="team-avatar avatar-2xl" />
+                                    </template>
+                                    <template x-if="!match.teamA || !match.teamA.photo">
+                                        <span class="inline-block team-avatar avatar-2xl bg-gray-200 border border-gray-300"></span>
+                                    </template>
+                                    <span class="font-bold text-base ml-1" x-text="match.teamA ? match.teamA.name : '-' "></span>
+                                </div>
+                                <span class="score-box font-bold" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
+                                <div class="flex items-center gap-2">
+                                    <template x-if="match.teamB && match.teamB.photo">
+                                        <img :src="'/storage/' + match.teamB.photo" alt="B" class="team-avatar avatar-2xl" />
+                                    </template>
+                                    <template x-if="!match.teamB || !match.teamB.photo">
+                                        <span class="inline-block team-avatar avatar-2xl bg-gray-200 border border-gray-300"></span>
+                                    </template>
+                                    <span class="font-bold text-base ml-1" x-text="match.teamB ? match.teamB.name : '-' "></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 mb-2">
+                                <span class="text-gray-700 text-base" x-text="match.match_date + ' • ' + match.match_time"></span>
+                                <span class="text-gray-600 text-base" x-text="'Venue: ' + (match.venue ?? '-')"></span>
                             </div>
                             <div class="flex items-center gap-2 text-sm">
                                 <span class="font-semibold text-gray-700">Status:</span>
-                                <span x-text="match.is_done ? 'Finalized' : 'Ongoing'" :class="match.is_done ? 'px-2 py-1 rounded bg-green-100 text-green-700 text-xs' : 'px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs'"></span>
+                                <span x-show="match.is_done" class="status-finalized">Finalized</span>
+                                <span x-show="!match.is_done" class="status-ongoing">Ongoing</span>
                             </div>
                         </div>
                     </template>
@@ -561,16 +805,16 @@
         <div x-show="tab === 'rules'" class="schedule-section w-full max-w-full mx-auto px-2">
             <div class="schedule-header">Sport Rules</div>
             @php
-                $rules = \App\Models\Rules::with('sport')->orderBy('created_at', 'desc')->get();
+                $rules = \App\Models\Rules::with('sport')->orderBy('id', 'asc')->get();
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="schedule-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($rules as $rule)
-                    <div class="rule-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:320px;">
-                        <div class="flex flex-col gap-2 mb-4">
-                            <div class="font-bold text-xl text-red-600 mb-1">{{ $rule->sport->sport_name ?? '-' }}</div>
-                            <div class="font-semibold text-lg text-gray-900 mb-1">{{ $rule->title }}</div>
-                            <div class="text-gray-700 text-base mb-2">{{ $rule->description }}</div>
+                    <div class="match-card custom-match-card p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col gap-3 relative" style="min-width:200px;">
+                        <div class="font-bold text-lg flex items-center gap-2 mb-1">
+                            <span>{{ $rule->sport->sport_name ?? '-' }}</span>
                         </div>
+                        <div class="text-gray-900 text-base font-semibold mb-1">{{ $rule->title }}</div>
+                        <div class="text-gray-700 text-base mb-2">{{ $rule->description }}</div>
                         @if($rule->file_path)
                             <div class="mb-4 flex justify-center">
                                 <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-44 h-60 rounded shadow border" frameborder="0"></iframe>
@@ -610,7 +854,18 @@
                         'bronze' => $bronze,
                         'total' => $total
                     ];
-                });
+                })->sort(function($a, $b) {
+                    if ($a['gold'] !== $b['gold']) {
+                        return $b['gold'] <=> $a['gold'];
+                    }
+                    if ($a['silver'] !== $b['silver']) {
+                        return $b['silver'] <=> $a['silver'];
+                    }
+                    if ($a['bronze'] !== $b['bronze']) {
+                        return $b['bronze'] <=> $a['bronze'];
+                    }
+                    return $b['total'] <=> $a['total'];
+                })->values();
             @endphp
             <div class="overflow-x-auto">
                 <table class="scoreboard-table">
@@ -657,14 +912,12 @@ function scheduleComponent() {
         sports: @json(\App\Models\Sport::all()),
         schedules: @json(\App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->get()),
         get filteredSchedules() {
-            return this.schedules.filter(match => {
-                const sportMatch = !this.filterSport || match.sport_id == this.filterSport;
-                const genderMatch = !this.filterGender || match.gender == this.filterGender;
-                return sportMatch && genderMatch;
-            });
+            // Filtering removed: always return all schedules
+            return this.schedules;
         },
         get sortedSchedules() {
-            return [...this.filteredSchedules].sort((a, b) => {
+            // Sort all schedules by date/time
+            return [...this.schedules].sort((a, b) => {
                 const ad = new Date(a.match_date + ' ' + a.match_time);
                 const bd = new Date(b.match_date + ' ' + b.match_time);
                 return ad - bd;
@@ -673,7 +926,7 @@ function scheduleComponent() {
     }
 }
 </script>
-
+<!-- Rules Card View Section -->
     <div x-show="tab === 'rules'" class="schedule-section w-full max-w-full mx-auto px-2">
         <div class="schedule-header">Sport Rules</div>
         @php
@@ -687,7 +940,7 @@ function scheduleComponent() {
                     <div class="rule-desc">{{ $rule->description }}</div>
                     @if($rule->file_path)
                         <div class="mb-4 flex justify-center">
-                            <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-44 h-60 rounded shadow border" frameborder="0"></iframe>
+                            <iframe src="{{ asset('storage/'.$rule->file_path) }}#toolbar=0&navpanes=0&scrollbar=0&page=1" class="w-70 h-70 rounded shadow border" frameborder="0"></iframe>
                         </div>
                     @else
                         <div class="mb-4 flex justify-center">

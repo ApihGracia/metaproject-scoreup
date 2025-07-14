@@ -1,9 +1,9 @@
 {{-- filepath: resources/views/livewire/technician/technician-schedule.blade.php --}}
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-20 max-w-6xl mx-auto">
     @if(!$selectedSportName)
     <table class="w-full table-auto border-collapse border border-gray-300">
         <h2 class="text-xl font-bold mb-4">Select a Sport</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
             {{-- @foreach($sports as $sport)
                 <button wire:click="selectSport('{{ $sport->sport_name }}')" class="bg-blue-600 text-white px-4 py-2 rounded w-full">
                     {{ $sport->sport_name }}
@@ -19,9 +19,9 @@
         {{-- <button wire:click="$set('selectedSportName', null)" class="mb-4 bg-gray-400 text-white px-4 py-2 rounded">Back</button> --}}
         <button wire:click="backToList">Back</button>
         <h2 class="text-xl font-bold mb-4">Schedules for {{ $selectedSportName }}</h2>
-        <table class="w-full table-auto border-collapse border border-gray-300">
+        <table class="w-full table-auto border-collapse rounded-2xl overflow-hidden shadow-lg border border-gray-300 mt-6">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 text-black text-lg">
                     <th class="border px-4 py-2">Date</th>
                     <th class="border px-4 py-2">Time</th>
                     <th class="border px-4 py-2">Gender</th>
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 @forelse($schedules as $schedule)
-                    <tr>
+                    <tr class="bg-gradient-to-r from-blue-100 to-purple-100">
                         <td class="border px-4 py-2">{{ $schedule->match_date }}</td>
                         <td class="border px-4 py-2">{{ $schedule->match_time }}</td>
                         <td class="border px-4 py-2">{{ $schedule->gender }}</td>
@@ -67,7 +67,7 @@
         </table>
     @else
         {{-- <button wire:click="backToList" class="mb-4 bg-gray-400 text-white px-4 py-2 rounded">Back</button> --}}
-        <button wire:click="backToList">Back</button>
+        {{-- <button wire:click="backToList">Back</button> --}}
 
         <h2 class="text-xl font-bold mb-4">
             Update Score: {{ $selectedSchedule->teamA->name }} vs {{ $selectedSchedule->teamB->name }}
