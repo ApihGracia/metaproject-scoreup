@@ -368,25 +368,30 @@
                         <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
                     @endforelse
                 </div> --}}
+
                 <div class="schedule-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @php
                         $schedules = \App\Models\Schedule::with(['sport', 'teamA', 'teamB'])->orderBy('match_date')->get();
                     @endphp
-                    <template x-for="match in filteredSchedules" :key="match.id">
-                        <div class="match-card">
-                            <div class="match-type" x-text="match.sport.sport_name"></div>
-                            <div class="match-info" x-text="match.match_date + ' • ' + match.match_time"></div>
-                            <div class="match-teams">
-                                <span x-text="match.teamA.name"></span>
-                                <span class="match-score" x-text="(match.score_a ?? '-') + ' : ' + (match.score_b ?? '-')"></span>
-                                <span x-text="match.teamB.name"></span>
+                    @forelse($schedules as $match)
+                        <template x-for="match in filteredSchedules" :key="match.id">
+                            <div class="match-card">
+                                <div class="match-type" x-text="match.sport.sport_name"></div>
+                                <div class="match-info" x-text="match.match_date + ' • ' + match.match_time"></div>
+                                <div class="match-teams">
+                                    <span font-bold text-base>{{ $match->teamA->name ?? '-' }}</span>
+                                    <span class="match-score" x-text="{{ $match->score_a ?? '-' }} + ' : ' + {{ $match->score_b ?? '-' }}"></span>
+                                    <span font-bold text-base>{{ $match->teamB->name ?? '-' }}</span>
+                                </div>
+                                <div class="match-status" x-text="match.is_done ? 'Finalized' : 'Ongoing'"></div>
                             </div>
-                            <div class="match-status" x-text="match.is_done ? 'Finalized' : 'Ongoing'"></div>
-                        </div>
-                    </template>
-                    <template x-if="filteredSchedules.length === 0">
+                        </template>
+                        <template x-if="filteredSchedules.length === 0">
+                            <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
+                        </template>
+                    @empty
                         <div class="col-span-full text-center text-gray-400 py-8">No matches found.</div>
-                    </template>
+                    @endforelse
                 </div>
             </template>
 
