@@ -12,6 +12,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+
 #[Layout('components.layouts.auth')]
 class Login extends Component
 {
@@ -26,6 +27,7 @@ class Login extends Component
     /**
      * Handle an incoming authentication request.
      */
+
     public function login(): void
     {
         $this->validate();
@@ -43,8 +45,39 @@ class Login extends Component
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // $this->redirectIntended(default: route('admin.admin-dashboard', absolute: false), navigate: true);
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            $this->redirect(route('dashboard'), navigate: true);
+        } elseif ($user->hasRole('technician')) {
+            $this->redirect(route('techniciandashboard'), navigate: true);
+        } else {
+            $this->redirect(route('dashboard'), navigate: true);
+        }
     }
+
+    // public function login(): void
+    // {
+    //     $this->validate([
+    //         'email' => ['required', 'string', 'email'],
+    //         'password' => ['required', 'string'],
+    //     ]);
+
+    //     // $this->ensureIsNotRateLimited();
+
+    //     if (!Auth::guard('admin')->attempt([
+    //         'email' => $this->email,
+    //         'password' => $this->password
+    //     ])) {
+    //         throw ValidationException::withMessages(['email' => __('auth.failed')]);
+    //     }
+
+    //     session()->regenerate();
+
+    //     redirect()->route('admin.admin-dashboard');
+    // }
 
     /**
      * Ensure the authentication request is not rate limited.
@@ -72,6 +105,6 @@ class Login extends Component
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }

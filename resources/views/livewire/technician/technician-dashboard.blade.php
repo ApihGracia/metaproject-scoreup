@@ -1,0 +1,1 @@
+@livewire('technician.technician-scoreboard')

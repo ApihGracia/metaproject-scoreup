@@ -6,47 +6,40 @@
 
     <form wire:submit="register" class="flex flex-col gap-6">
         <!-- Name -->
-        <flux:input
-            wire:model="name"
-            :label="__('Name')"
-            type="text"
-            required
-            autofocus
-            autocomplete="name"
-            :placeholder="__('Full name')"
-        />
+        <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" :placeholder="__('Full name')" />
 
         <!-- Email Address -->
-        <flux:input
-            wire:model="email"
-            :label="__('Email address')"
-            type="email"
-            required
-            autocomplete="email"
-            placeholder="email@example.com"
-        />
+        <flux:input wire:model="email" :label="__('Email address')" type="email" required autocomplete="email" placeholder="email@example.com" />
 
         <!-- Password -->
-        <flux:input
-            wire:model="password"
-            :label="__('Password')"
-            type="password"
-            required
-            autocomplete="new-password"
-            :placeholder="__('Password')"
-            viewable
-        />
+        <flux:input wire:model="password" :label="__('Password')" type="password" required autocomplete="new-password" :placeholder="__('Password')" viewable />
 
         <!-- Confirm Password -->
-        <flux:input
-            wire:model="password_confirmation"
-            :label="__('Confirm password')"
-            type="password"
-            required
-            autocomplete="new-password"
-            :placeholder="__('Confirm password')"
-            viewable
-        />
+        <flux:input wire:model="password_confirmation" :label="__('Confirm password')" type="password" required autocomplete="new-password" :placeholder="__('Confirm password')" viewable />
+
+        <!-- Role Selection -->
+        <div>
+            <label class="block font-medium text-sm text-gray-700 mb-1">Role</label>
+            <select wire:model="role" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="public">Public User</option>
+                <option value="technician">Sport Technician</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <!-- Sport Selection (if technician) -->
+        @if ($role === 'technician')
+            <div>
+                <label class="block font-medium text-sm text-gray-700 mb-1">Sport</label>
+                <select wire:model="sport" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">-- Choose Sport --</option>
+                    <option value="Futsal">Futsal</option>
+                    <option value="Badminton">Badminton</option>
+                    <option value="Netball">Netball</option>
+                    <option value="Volleyball">Volleyball</option>
+                </select>
+            </div>
+        @endif
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
